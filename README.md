@@ -1,5 +1,11 @@
 # pivotal-auto-deliver
-Pivotal auto deliver application
+
+Pivotal Tracker auto deliver integration.
+
+https://www.pivotaltracker.com
+
+## Available hooks
+* Nevercode (https://nevercode.io/)
 
 ## Configuration
 You should set pivotal tracker configuration before you start the application.
