@@ -1,0 +1,53 @@
+{
+  "name": "pivotal-auto-deliver",
+  "version": "1.0.0",
+  "description": "Auto deliver integration for Pivotal Tracker",
+  "main": "index.js",
+  "scripts": {
+    "start": "node bin/index.js",
+    "test": "jest",
+    "testing": "jest --watch",
+    "build": "tsc"
+  },
+  "author": "Bartosz Kostrowiecki <bartosz.kostrowiecki@gmail.com> (http://bkostrowiecki.pl)",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "@types/axios-mock-adapter": "^1.9.0",
+    "@types/body-parser": "^1.16.5",
+    "@types/debug": "0.0.30",
+    "@types/express": "^4.0.37",
+    "@types/jest": "^21.1.4",
+    "@types/mkdirp": "^0.5.1",
+    "@types/morgan": "^1.7.33",
+    "@types/node": "^8.0.46",
+    "@types/supertest": "^2.0.3",
+    "axios-mock-adapter": "^1.9.0",
+    "jest": "^21.2.1",
+    "moment": "^2.19.1",
+    "supertest": "^3.0.0",
+    "typescript": "^2.5.3"
+  },
+  "dependencies": {
+    "@types/axios": "^0.14.0",
+    "axios": "^0.17.0",
+    "body-parser": "^1.18.2",
+    "debug": "^3.1.0",
+    "express": "^4.16.2",
+    "mkdirp": "^0.5.1",
+    "moment": "^2.19.1",
+    "morgan": "^1.9.0"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "ts",
+      "js"
+    ],
+    "transform": {
+      "^.+\\.(ts|tsx)$": "<rootDir>/preprocessor.js"
+    },
+    "testMatch": [
+      "**/__tests__/*.(ts)",
+      "**/*.test.(ts)"
+    ]
+  }
+}
