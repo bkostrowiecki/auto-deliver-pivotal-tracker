@@ -20,6 +20,7 @@
     "@types/mkdirp": "^0.5.1",
     "@types/morgan": "^1.7.33",
     "@types/node": "^8.0.46",
+    "@types/nodemailer": "^4.3.1",
     "@types/supertest": "^2.0.3",
     "axios-mock-adapter": "^1.9.0",
     "jest": "^21.2.1",
@@ -35,7 +36,8 @@
     "express": "^4.16.2",
     "mkdirp": "^0.5.1",
     "moment": "^2.19.1",
-    "morgan": "^1.9.0"
+    "morgan": "^1.9.0",
+    "nodemailer": "^4.4.1"
   },
   "jest": {
     "moduleFileExtensions": [
