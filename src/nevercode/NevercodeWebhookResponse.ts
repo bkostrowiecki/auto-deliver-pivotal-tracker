@@ -29,20 +29,20 @@ export default interface NevercodeWebhookResponse {
             commit_hash: string,
             datetime: string,
             description: string
-        }]
+        }],
+        commit_hash: string,
+        created_at: string,
+        error_message: string,
+        finished_at: string,
+        started_at: string,
+        status: string,
+        tests: {
+            errors: number,
+            failed: number,
+            passed: number,
+            skipped: 0
+        },
+        version: string,
+        web_url: string
     },
-    commit_hash: string,
-    created_at: string,
-    error_message: string,
-    finished_at: string,
-    started_at: string,
-    status: string,
-    tests: {
-        errors: number,
-        failed: number,
-        passed: number,
-        skipped: 0
-    },
-    version: string,
-    web_url: string
 };

@@ -4,7 +4,7 @@ import NevercodeMock from './nevercode/NevercodeMock';
 import { NevercodeChange } from './nevercode/NevercodeChange';
 import PivotalTrackerMock from './pivotalTracker/PivotalTrackerMock';
 let MockAdapter = require('axios-mock-adapter');
-import axios from 'axios';
+import axios, { AxiosResponse }  from 'axios';
 
 describe('Routes', () => {
     it('Should respond with ok status when getting request from nevercode', () => {
@@ -14,7 +14,7 @@ describe('Routes', () => {
 
         let tasks = ['123456789', '223456789'];
 
-        PivotalTrackerMock.mockRequests(tasks, 'OK', 200);
+        PivotalTrackerMock.mockRequests(tasks, 12, 200);
         
         expect(supertest(App).post('/nevercode-hook').send(mock)).resolves.toEqual(null);
     });

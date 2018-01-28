@@ -9,13 +9,13 @@ describe('Pivotal tracker service', () => {
         let pivotalTrackerService = new PivotalTrackerService_1.PivotalTrackerService();
         let tasks = ['123456789', '223456789'];
         PivotalTrackerMock_1.default.mockRequests(tasks, '1', 200);
-        expect(pivotalTrackerService.markAsDeliver(tasks)).resolves.toEqual(undefined);
+        expect(pivotalTrackerService.markAsDeliver(tasks, 'test', 'test')).resolves.toEqual(undefined);
     });
     it('Should failed because given ID does not exist', () => {
         let pivotalTrackerService = new PivotalTrackerService_1.PivotalTrackerService();
         let tasks = ['123456789', '223456789'];
         PivotalTrackerMock_1.default.mockRequests(tasks, '1', 404);
-        expect(pivotalTrackerService.markAsDeliver(tasks)).rejects.not.toEqual(undefined);
+        expect(pivotalTrackerService.markAsDeliver(tasks, 'test', 'test')).rejects.not.toEqual(undefined);
     });
 });
 //# sourceMappingURL=PivotalTrackerService.test.js.map

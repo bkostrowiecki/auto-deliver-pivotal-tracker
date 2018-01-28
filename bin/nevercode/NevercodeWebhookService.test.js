@@ -41,5 +41,13 @@ describe('Nevercode Webhook Service', () => {
         expect(tasksToDeliver[0]).toEqual('12345678');
         expect(tasksToDeliver[1]).toEqual('987654321');
     }));
+    it('Should get a build string', () => {
+        let mock = NevercodeMock_1.default.generate();
+        mock.build.version = '2.0.0';
+        mock.build.build_number = 42;
+        let nevercodeWebhookService = new NevercodeWebhookService_1.NevercodeWebhookService();
+        let buildString = nevercodeWebhookService.getBuildString(mock);
+        expect(buildString).toEqual('2.0.0-42');
+    });
 });
 //# sourceMappingURL=NevercodeWebhookService.test.js.map

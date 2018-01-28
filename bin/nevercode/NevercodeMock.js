@@ -4,7 +4,9 @@ class NevercodeMock {
     static generate() {
         return {
             build: {
-                changes: []
+                changes: [],
+                version: '',
+                build_number: ''
             }
         };
     }

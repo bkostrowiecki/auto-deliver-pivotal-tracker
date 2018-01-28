@@ -4,16 +4,16 @@ import { PivotalTrackerStoryState } from './PivotalTrackerStoryState';
 
 export default class PivotalTrackerMock {
     static mockRequests(tasks, projectId, status) {
-        let axiosMockAdapter = new MockAdapter(axios);
+        let axiosMockAdapter = new MockAdapter(axios, { delayResponse: 1000 });
         tasks.forEach((task: string) => {
             axiosMockAdapter
-                .onPut(this.buildPivotalUrl('/projects/' + projectId + '/stories/' + task))
-                .reply(status, {
+                .onAny(this.buildPivotalUrl('/projects/' + projectId + '/stories/' + task))
+                .reply([status, {
                     current_state: PivotalTrackerStoryState.DELIVERED
                 }, {
-                    'Content-Type': 'application/json;charset=utf-8',
+                    'Content-Type': 'application/json;charset=UTF-8',
                     'X-TrackerToken': '1234567890'
-                });
+                }]);
         });
     }
 

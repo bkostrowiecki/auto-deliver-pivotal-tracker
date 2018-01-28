@@ -6,7 +6,7 @@ import { PivotalTrackerService } from './pivotalTracker/PivotalTrackerService';
 import { NevercodeWebhookService } from './nevercode/NevercodeWebhookService';
 import * as fs from 'fs';
 import * as moment from 'moment';
-import { TaskHash } from './pivotalTracker/task';
+import { StoryHash } from './pivotalTracker/task';
 
 // Creates and configures an ExpressJS web server.
 class App {
@@ -61,7 +61,9 @@ class App {
                     );
                     console.log('Found tasks ', tasks);
                     const deliveredTasks = await this.pivotalTrackerService.markAsDeliver(
-                        tasks
+                        tasks,
+                        workflow,
+                        this.nevercodeWebhookService.getBuildString(req.body)
                     );
                     console.log(
                         'Tasks ',
@@ -70,12 +72,16 @@ class App {
                     );
                     return res.json({
                         status: 'OK',
-                        deliveredTasks
+                        deliveredTasks,
+                        workflow
                     });
                 } catch (e) {
                     console.log(
                         JSON.stringify(e, null, 4),
-                        JSON.stringify(req.body, null, 4)
+                        JSON.stringify(req.body, null, 4),
+                        JSON.stringify({
+                            workflow
+                        }, null, 4)
                     );
                 }
             }

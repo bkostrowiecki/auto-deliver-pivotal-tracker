@@ -1,6 +1,6 @@
 import { PivotalTrackerStoryState } from './PivotalTrackerStoryState';
 
-export type TaskHash = string;
+export type StoryHash = string;
 export type DateString = string;
 
 export class Story {

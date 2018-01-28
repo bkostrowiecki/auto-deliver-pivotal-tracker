@@ -16,6 +16,9 @@ class NevercodeWebhookService {
             resolve(uniqueTasks);
         });
     }
+    getBuildString(response) {
+        return response.build.version + '-' + response.build.build_number;
+    }
     removeDuplicates(tasks) {
         return [...new Set(tasks)];
     }

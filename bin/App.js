@@ -46,15 +46,18 @@ class App {
             try {
                 const tasks = yield this.nevercodeWebhookService.parseWebhookResponse(req.body);
                 console.log('Found tasks ', tasks);
-                const deliveredTasks = yield this.pivotalTrackerService.markAsDeliver(tasks);
+                const deliveredTasks = yield this.pivotalTrackerService.markAsDeliver(tasks, workflow, this.nevercodeWebhookService.getBuildString(req.body));
                 console.log('Tasks ', deliveredTasks, ' were successfully marked as delivered');
                 return res.json({
                     status: 'OK',
-                    deliveredTasks
+                    deliveredTasks,
+                    workflow
                 });
             }
             catch (e) {
-                console.log(JSON.stringify(e, null, 4), JSON.stringify(req.body, null, 4));
+                console.log(JSON.stringify(e, null, 4), JSON.stringify(req.body, null, 4), JSON.stringify({
+                    workflow
+                }, null, 4));
             }
         }));
         this.express.use('/', router);

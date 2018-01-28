@@ -4,8 +4,10 @@ export default class NevercodeMock {
     static generate() {
         return {
             build: {
-                changes: []
+                changes: [],
+                version: '',
+                build_number: ''
             }
-        } as NevercodeWebhookResponse;
+        } as any;
     }
 }

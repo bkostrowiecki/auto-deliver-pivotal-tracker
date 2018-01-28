@@ -13,7 +13,7 @@ describe('Pivotal tracker service', () => {
         let tasks = ['123456789', '223456789'];
         PivotalTrackerMock.mockRequests(tasks, '1', 200);
 
-        expect(pivotalTrackerService.markAsDeliver(tasks)).resolves.toEqual(
+        expect(pivotalTrackerService.markAsDeliver(tasks, 'test', 'test')).resolves.toEqual(
             undefined
         );
     });
@@ -24,7 +24,7 @@ describe('Pivotal tracker service', () => {
         let tasks = ['123456789', '223456789'];
         PivotalTrackerMock.mockRequests(tasks, '1', 404);
 
-        expect(pivotalTrackerService.markAsDeliver(tasks)).rejects.not.toEqual(
+        expect(pivotalTrackerService.markAsDeliver(tasks, 'test', 'test')).rejects.not.toEqual(
             undefined
         );
     });
