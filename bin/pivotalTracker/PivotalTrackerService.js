@@ -69,7 +69,7 @@ class PivotalTrackerService {
         return __awaiter(this, void 0, void 0, function* () {
             let postLabelUrl = this.buildPivotalUrl('/projects/' + this.projectId + '/labels');
             console.log('Request ' + postLabelUrl, JSON.stringify(this.headers, null, 4));
-            const response = yield axios_1.default.post(postLabelUrl, { name: label }, this.headers);
+            const response = yield axios_1.default.post(postLabelUrl, JSON.stringify({ name: label }), this.headers);
             console.log(JSON.stringify(response, null, 4));
             return response;
         });
@@ -78,9 +78,9 @@ class PivotalTrackerService {
         return buildTag + workflow + '-' + buildString;
     }
     postComment(storyHash, buildLabel) {
-        return axios_1.default.post(this.buildStoryUrl(`/projects/${this.projectId}/stories/${storyHash}/comments`), {
+        return axios_1.default.post(this.buildStoryUrl(`/projects/${this.projectId}/stories/${storyHash}/comments`), JSON.stringify({
             text: '#' + buildLabel
-        }, this.headers);
+        }), this.headers);
     }
     getTask(storyHash) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -96,10 +96,10 @@ class PivotalTrackerService {
         });
     }
     updateTask(story) {
-        return axios_1.default.put(this.buildStoryUrl(story.id.toString()), {
+        return axios_1.default.put(this.buildStoryUrl(story.id.toString()), JSON.stringify({
             current_state: story.current_state,
             labels: story.labels
-        }, this.headers);
+        }), this.headers);
     }
     buildStoryUrl(storyHash) {
         return this.buildPivotalUrl('/projects/' + this.projectId + '/stories/' + storyHash);

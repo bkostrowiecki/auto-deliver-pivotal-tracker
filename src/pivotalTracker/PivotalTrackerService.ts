@@ -78,7 +78,7 @@ export class PivotalTrackerService {
         let postLabelUrl = this.buildPivotalUrl('/projects/' + this.projectId + '/labels');
 
         console.log('Request ' + postLabelUrl, JSON.stringify(this.headers, null, 4));
-        const response = await axios.post(postLabelUrl, { name: label }, this.headers);
+        const response = await axios.post(postLabelUrl, JSON.stringify({ name: label }), this.headers);
 
         console.log(JSON.stringify(response, null, 4));
 
@@ -91,9 +91,9 @@ export class PivotalTrackerService {
     }
 
     private postComment(storyHash: StoryHash, buildLabel: string) {
-        return axios.post(this.buildStoryUrl(`/projects/${this.projectId}/stories/${storyHash}/comments`), {
+        return axios.post(this.buildStoryUrl(`/projects/${this.projectId}/stories/${storyHash}/comments`), JSON.stringify({
             text: '#' + buildLabel
-        }, this.headers);
+        }), this.headers);
     }
 
     private async getTask(storyHash: StoryHash) {
@@ -108,10 +108,10 @@ export class PivotalTrackerService {
     }
 
     private updateTask(story: Story) {
-        return axios.put(this.buildStoryUrl(story.id.toString()), {
+        return axios.put(this.buildStoryUrl(story.id.toString()), JSON.stringify({
             current_state: story.current_state,
             labels: story.labels
-        }, this.headers); 
+        }), this.headers);
     }
 
     private buildStoryUrl(storyHash: StoryHash) {
