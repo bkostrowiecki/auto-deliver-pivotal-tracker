@@ -36,12 +36,19 @@ class PivotalTrackerService {
                 axios_1.default.all(promises).then(axios_1.default.spread((...responses) => {
                     let updateTaskPromises = responses.map((response) => {
                         let story = response.data;
+                        console.log(JSON.stringify(response.data, null, 4));
+                        console.log(story.labels);
                         story.labels = story.labels.filter((label) => label.name.indexOf(buildTag) === -1);
+                        console.log(story.labels);
                         story.labels.push(buildLabel);
+                        console.log(story.labels);
+                        console.log(story.current_state);
                         if (story.current_state === PivotalTrackerStoryState_1.PivotalTrackerStoryState.FINISHED) {
+                            console.log('Current state changed to: ' + story.current_state);
                             story.current_state = PivotalTrackerStoryState_1.PivotalTrackerStoryState.DELIVERED;
                         }
                         return this.updateTask(story).then((response) => {
+                            console.log(JSON.stringify(response.data, null, 4));
                             return this.postComment(story.id, buildLabel);
                         });
                     });
@@ -73,10 +80,14 @@ class PivotalTrackerService {
         }, this.headers);
     }
     getTask(storyHash) {
-        return axios_1.default.get(this.buildStoryUrl(storyHash), this.headers);
+        return __awaiter(this, void 0, void 0, function* () {
+            const response = yield axios_1.default.get(this.buildStoryUrl(storyHash), this.headers);
+            console.log(console.log(JSON.stringify(repsonse.data, null, 4)));
+            return response;
+        });
     }
     updateTask(story) {
-        return axios_1.default.put(this.buildStoryUrl('/projects/' + this.projectId + '/stories/' + story.id), {
+        return axios_1.default.put(this.buildStoryUrl(story.id.toString()), {
             current_state: story.current_state,
             labels: story.labels
         }, this.headers);

@@ -89,12 +89,14 @@ export class PivotalTrackerService {
         }, this.headers);
     }
 
-    private getTask(storyHash: StoryHash) {
-        return axios.get(this.buildStoryUrl(storyHash), this.headers);
+    private async getTask(storyHash: StoryHash) {
+        const response = await axios.get(this.buildStoryUrl(storyHash), this.headers);
+        console.log(console.log(JSON.stringify(repsonse.data, null, 4)));
+        return response;
     }
 
     private updateTask(story: Story) {
-        return axios.put(this.buildStoryUrl('/projects/' + this.projectId + '/stories/' + story.id), {
+        return axios.put(this.buildStoryUrl(story.id.toString()), {
             current_state: story.current_state,
             labels: story.labels
         }, this.headers); 
