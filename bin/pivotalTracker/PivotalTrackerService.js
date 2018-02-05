@@ -40,15 +40,10 @@ class PivotalTrackerService {
                     console.log(responses.length);
                     let updateTaskPromises = responses.map((response) => {
                         console.log('TASK');
-                        console.log(response);
                         let story = response.data;
                         console.log(JSON.stringify(response.data, null, 4));
-                        console.log(story.labels);
-                        story.labels = story.labels.filter((label) => label.name.indexOf(buildTag) === -1);
-                        console.log(story.labels);
+                        story.labels = story.labels.filter((label) => label.name.indexOf(buildTag + workflow) === -1);
                         story.labels.push(buildLabel);
-                        console.log(story.labels);
-                        console.log(story.current_state);
                         if (story.current_state === PivotalTrackerStoryState_1.PivotalTrackerStoryState.FINISHED) {
                             console.log('Current state changed to: ' + story.current_state);
                             story.current_state = PivotalTrackerStoryState_1.PivotalTrackerStoryState.DELIVERED;
@@ -87,9 +82,9 @@ class PivotalTrackerService {
         return buildTag + workflow + '-' + buildString;
     }
     postComment(storyHash, buildLabel) {
-        return axios_1.default.post(this.buildStoryUrl(`/projects/${this.projectId}/stories/${storyHash}/comments`), {
+        return axios_1.default.post(this.buildStoryUrl(storyHash) + `/comments`, {
             text: '#' + buildLabel
-        }, this.headers);
+        });
     }
     getTask(storyHash) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -105,10 +100,18 @@ class PivotalTrackerService {
         });
     }
     updateTask(story) {
-        return axios_1.default.put(this.buildStoryUrl(story.id.toString()), {
-            current_state: story.current_state,
-            labels: story.labels
-        }, this.headers);
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const storyResponse = yield axios_1.default.put(this.buildStoryUrl(story.id.toString()), {
+                    current_state: story.current_state,
+                    labels: story.labels
+                });
+                return storyResponse;
+            }
+            catch (e) {
+                console.log(e, null, 4);
+            }
+        });
     }
     buildStoryUrl(storyHash) {
         return this.buildPivotalUrl('/projects/' + this.projectId + '/stories/' + storyHash);
