@@ -28,6 +28,7 @@ export class PivotalTrackerService {
         const tasks = build.getTasks();
         const workflow = build.getWorkflow();
         const buildString = build.getBuildString();
+        const shouldDeliver = build.shouldDeliverTasks();
 
         return new Promise(async (resolve, reject) => {
             const buildLabelText = this.buildLabel(workflow, buildString);
@@ -39,7 +40,7 @@ export class PivotalTrackerService {
             let promises = tasks.map((task: StoryHash) => {
                 console.log(task);
                 return this.getTask(task);
-            }); 
+            });
 
             axios.all(promises).then(axios.spread((...responses) => {
                 console.log(responses.length);
@@ -53,7 +54,7 @@ export class PivotalTrackerService {
 
                     story.labels.push(buildLabel);
 
-                    if (story.current_state === PivotalTrackerStoryState.FINISHED) {
+                    if (story.current_state === PivotalTrackerStoryState.FINISHED && shouldDeliver) {
                         console.log('Current state changed to: ' + story.current_state);
                         story.current_state = PivotalTrackerStoryState.DELIVERED;
                     }

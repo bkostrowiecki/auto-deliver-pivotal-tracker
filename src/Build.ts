@@ -6,7 +6,11 @@ import Commit from "./nevercode/Commit";
 export class Build {
     private MISSING_PROPERTY_ERROR = 'Some required property is missing';
 
-    constructor(private response: NevercodeWebhookResponse, private workflow: string) {
+    constructor(private response: NevercodeWebhookResponse, private workflow: string, private shouldDeliver: boolean = false) {
+    }
+
+    shouldDeliverTasks() {
+        return this.shouldDeliver;
     }
 
     getTasks(): StoryHash[] {

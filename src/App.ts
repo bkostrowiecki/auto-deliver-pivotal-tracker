@@ -52,9 +52,10 @@ class App {
                 next: express.NextFunction
             ) => {
                 const workflow = req.query.workflow;
+                const shouldDeliver = req.query.shouldDeliver === '1';
 
                 try {
-                    const build = new Build(req.body, workflow);
+                    const build = new Build(req.body, workflow, shouldDeliver);
 
                     const tasks = build.getTasks();
 
