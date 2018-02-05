@@ -74,7 +74,7 @@ export class PivotalTrackerService {
     private async postBuildLabel(label: string) {
         let postLabelUrl = this.buildPivotalUrl('/projects/' + this.projectId + '/labels');
 
-        console.log('Request ' + postLabelUrl);
+        console.log('Request ' + postLabelUrl, JSON.stringify(this.headers, null, 4));
         const response = await axios.post(postLabelUrl, { name: label }, this.headers);
 
         console.log(JSON.stringify(response, null, 4));
