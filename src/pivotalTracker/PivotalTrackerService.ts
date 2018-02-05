@@ -18,7 +18,7 @@ export class PivotalTrackerService {
         this.headers = {
             'Content-Type': 'application/json',
             'X-TrackerToken': this.token
-        }
+        };
     }
 
     async processTasks(build: Build) {
@@ -90,9 +90,14 @@ export class PivotalTrackerService {
     }
 
     private async getTask(storyHash: StoryHash) {
-        const response = await axios.get(this.buildStoryUrl(storyHash), this.headers);
-        console.log(console.log(JSON.stringify(response.data, null, 4)));
-        return response;
+        try {
+            console.log('Request ', this.buildStoryUrl(storyHash));
+            const response = await axios.get(this.buildStoryUrl(storyHash), this.headers);
+            console.log(console.log(JSON.stringify(response.data, null, 4)));
+            return response;
+        } catch (e) {
+            console.log(JSON.stringify(e, null, 4));
+        }
     }
 
     private updateTask(story: Story) {
