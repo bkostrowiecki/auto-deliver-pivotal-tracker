@@ -37,10 +37,10 @@ class PivotalTrackerService {
                     return this.getTask(task);
                 });
                 axios_1.default.all(promises).then(axios_1.default.spread((...responses) => {
-                    console.log('TASK');
                     console.log(responses.length);
-                    console.log(JSON.stringify(responses, null, 4));
                     let updateTaskPromises = responses.map((response) => {
+                        console.log('TASK');
+                        console.log(response);
                         let story = response.data;
                         console.log(JSON.stringify(response.data, null, 4));
                         console.log(story.labels);
