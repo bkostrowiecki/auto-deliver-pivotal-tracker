@@ -34,8 +34,7 @@ export class PivotalTrackerService {
 
             let buildLabelResponse = await this.postBuildLabel(buildLabelText);
 
-            console.log('Response: ', JSON.stringify(buildLabelResponse, null, 4));
-            let buildLabel = buildLabelResponse.data;
+            let buildLabel = buildLabelText;
 
             let promises = tasks.map((task: StoryHash) => {
                 return this.getTask(task);
