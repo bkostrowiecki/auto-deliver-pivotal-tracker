@@ -37,6 +37,7 @@ class PivotalTrackerService {
                     return this.getTask(task);
                 });
                 axios_1.default.all(promises).then(axios_1.default.spread((...responses) => {
+                    console.log('TASK');
                     console.log(JSON.stringify(responses, null, 4));
                     let updateTaskPromises = responses.map((response) => {
                         let story = response.data;
@@ -94,7 +95,7 @@ class PivotalTrackerService {
             try {
                 console.log('Request ', this.buildStoryUrl(storyHash));
                 const response = yield axios_1.default.get(this.buildStoryUrl(storyHash));
-                console.log(console.log(JSON.stringify(response, null, 4)));
+                console.log(console.log(JSON.stringify(response.data, null, 4)));
                 return response;
             }
             catch (e) {
