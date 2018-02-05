@@ -93,7 +93,7 @@ class PivotalTrackerService {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 console.log('Request ', this.buildStoryUrl(storyHash));
-                const response = yield axios_1.default.get(this.buildStoryUrl(storyHash), this.headers);
+                const response = yield axios_1.default.get(this.buildStoryUrl(storyHash));
                 console.log(console.log(JSON.stringify(response, null, 4)));
                 return response;
             }
