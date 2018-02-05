@@ -19,6 +19,9 @@ export class PivotalTrackerService {
             'Content-Type': 'application/json',
             'X-TrackerToken': this.token
         };
+
+        axios.defaults.headers.common['Content-Type'] = 'application/json';
+        axios.defaults.headers.common['X-TrackerToken'] = this.token;
     }
 
     async processTasks(build: Build) {

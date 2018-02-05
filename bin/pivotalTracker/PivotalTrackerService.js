@@ -20,6 +20,8 @@ class PivotalTrackerService {
             'Content-Type': 'application/json',
             'X-TrackerToken': this.token
         };
+        axios_1.default.defaults.headers.common['Content-Type'] = 'application/json';
+        axios_1.default.defaults.headers.common['X-TrackerToken'] = this.token;
     }
     processTasks(build) {
         return __awaiter(this, void 0, void 0, function* () {
