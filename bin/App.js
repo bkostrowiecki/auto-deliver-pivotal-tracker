@@ -12,7 +12,7 @@ const express = require("express");
 const logger = require("morgan");
 const bodyParser = require("body-parser");
 const PivotalTrackerService_1 = require("./pivotalTracker/PivotalTrackerService");
-const NevercodeWebhookService_1 = require("./nevercode/NevercodeWebhookService");
+const Build_1 = require("./Build");
 // Creates and configures an ExpressJS web server.
 class App {
     //Run configuration methods on the Express instance.
@@ -20,7 +20,6 @@ class App {
         this.express = express();
         this.middleware();
         this.routes();
-        this.nevercodeWebhookService = new NevercodeWebhookService_1.NevercodeWebhookService();
         this.pivotalTrackerService = new PivotalTrackerService_1.PivotalTrackerService();
     }
     // Configure Express middleware.
@@ -44,9 +43,10 @@ class App {
         router.post('/nevercode-hook', (req, res, next) => __awaiter(this, void 0, void 0, function* () {
             const workflow = req.query.workflow;
             try {
-                const tasks = yield this.nevercodeWebhookService.parseWebhookResponse(req.body);
+                const build = new Build_1.Build(req.body, workflow);
+                const tasks = build.getTasks();
                 console.log('Found tasks ', tasks);
-                const deliveredTasks = yield this.pivotalTrackerService.markAsDeliver(tasks, workflow, this.nevercodeWebhookService.getBuildString(req.body));
+                const deliveredTasks = yield this.pivotalTrackerService.processTasks(build);
                 console.log('Tasks ', deliveredTasks, ' were successfully marked as delivered');
                 return res.json({
                     status: 'OK',

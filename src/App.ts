@@ -3,10 +3,10 @@ import * as express from 'express';
 import * as logger from 'morgan';
 import * as bodyParser from 'body-parser';
 import { PivotalTrackerService } from './pivotalTracker/PivotalTrackerService';
-import { NevercodeWebhookService } from './nevercode/NevercodeWebhookService';
 import * as fs from 'fs';
 import * as moment from 'moment';
 import { StoryHash } from './pivotalTracker/task';
+import { Build } from './Build';
 
 // Creates and configures an ExpressJS web server.
 class App {
@@ -14,7 +14,6 @@ class App {
     public express: express.Application;
 
     private pivotalTrackerService: PivotalTrackerService;
-    private nevercodeWebhookService: NevercodeWebhookService;
 
     //Run configuration methods on the Express instance.
     constructor() {
@@ -22,7 +21,6 @@ class App {
         this.middleware();
         this.routes();
 
-        this.nevercodeWebhookService = new NevercodeWebhookService();
         this.pivotalTrackerService = new PivotalTrackerService();
     }
 
@@ -56,15 +54,12 @@ class App {
                 const workflow = req.query.workflow;
 
                 try {
-                    const tasks = await this.nevercodeWebhookService.parseWebhookResponse(
-                        req.body
-                    );
+                    const build = new Build(req.body, workflow);
+
+                    const tasks = build.getTasks();
+
                     console.log('Found tasks ', tasks);
-                    const deliveredTasks = await this.pivotalTrackerService.markAsDeliver(
-                        tasks,
-                        workflow,
-                        this.nevercodeWebhookService.getBuildString(req.body)
-                    );
+                    const deliveredTasks = await this.pivotalTrackerService.processTasks(build);
                     console.log(
                         'Tasks ',
                         deliveredTasks,

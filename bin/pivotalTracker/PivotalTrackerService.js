@@ -21,35 +21,40 @@ class PivotalTrackerService {
             'X-TrackerToken': this.token
         };
     }
-    markAsDeliver(tasks, workflow, buildString) {
-        return new Promise((resolve, reject) => __awaiter(this, void 0, void 0, function* () {
-            const buildLabelText = this.buildLabel(workflow, buildString);
-            let buildLabelResponse = yield this.postBuildLabel(buildLabelText);
-            let buildLabel = buildLabelResponse.data;
-            let promises = tasks.map((task) => {
-                return this.getTask(task);
-            });
-            axios_1.default.all(promises).then(axios_1.default.spread((...responses) => {
-                let updateTaskPromises = responses.map((response) => {
-                    let story = response.data;
-                    story.labels = story.labels.filter((label) => label.name.indexOf(buildTag) === -1);
-                    story.labels.push(buildLabel);
-                    if (story.current_state === PivotalTrackerStoryState_1.PivotalTrackerStoryState.FINISHED) {
-                        story.current_state = PivotalTrackerStoryState_1.PivotalTrackerStoryState.DELIVERED;
-                    }
-                    return this.updateTask(story).then((response) => {
-                        return this.postComment(story.id, buildLabel);
-                    });
+    processTasks(build) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const tasks = build.getTasks();
+            const workflow = build.getWorkflow();
+            const buildString = build.getBuildString();
+            return new Promise((resolve, reject) => __awaiter(this, void 0, void 0, function* () {
+                const buildLabelText = this.buildLabel(workflow, buildString);
+                let buildLabelResponse = yield this.postBuildLabel(buildLabelText);
+                let buildLabel = buildLabelResponse.data;
+                let promises = tasks.map((task) => {
+                    return this.getTask(task);
                 });
-                return axios_1.default.all(updateTaskPromises);
-            }))
-                .then(() => {
-                resolve();
-            })
-                .catch((reason) => {
-                reject(reason);
-            });
-        }));
+                axios_1.default.all(promises).then(axios_1.default.spread((...responses) => {
+                    let updateTaskPromises = responses.map((response) => {
+                        let story = response.data;
+                        story.labels = story.labels.filter((label) => label.name.indexOf(buildTag) === -1);
+                        story.labels.push(buildLabel);
+                        if (story.current_state === PivotalTrackerStoryState_1.PivotalTrackerStoryState.FINISHED) {
+                            story.current_state = PivotalTrackerStoryState_1.PivotalTrackerStoryState.DELIVERED;
+                        }
+                        return this.updateTask(story).then((response) => {
+                            return this.postComment(story.id, buildLabel);
+                        });
+                    });
+                    return axios_1.default.all(updateTaskPromises);
+                }))
+                    .then(() => {
+                    resolve();
+                })
+                    .catch((reason) => {
+                    reject(reason);
+                });
+            }));
+        });
     }
     postBuildLabel(label) {
         return __awaiter(this, void 0, void 0, function* () {

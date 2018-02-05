@@ -1,6 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 import { PivotalTrackerStoryState } from './PivotalTrackerStoryState';
 import { Story, StoryHash, StoryLabel } from './Task';
+import { Build } from '../Build';
 
 const buildTag = 'build-';
 
@@ -20,7 +21,11 @@ export class PivotalTrackerService {
         }
     }
 
-    markAsDeliver(tasks: StoryHash[], workflow: string, buildString: string) {
+    async processTasks(build: Build) {
+        const tasks = build.getTasks();
+        const workflow = build.getWorkflow();
+        const buildString = build.getBuildString();
+
         return new Promise(async (resolve, reject) => {
             const buildLabelText = this.buildLabel(workflow, buildString);
 

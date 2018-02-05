@@ -3,6 +3,9 @@ let MockAdapter = require('axios-mock-adapter');
 import axios from 'axios';
 import { PivotalTrackerStoryState } from './PivotalTrackerStoryState';
 import PivotalTrackerMock from './PivotalTrackerMock';
+import NevercodeMock from '../nevercode/NevercodeMock';
+import { Build } from '../Build';
+import NevercodeWebhookResponse from '../nevercode/NevercodeWebhookResponse';
 
 describe('Pivotal tracker service', () => {
     let projectId = '2102192';
@@ -13,7 +16,10 @@ describe('Pivotal tracker service', () => {
         let tasks = ['123456789', '223456789'];
         PivotalTrackerMock.mockRequests(tasks, '1', 200);
 
-        expect(pivotalTrackerService.markAsDeliver(tasks, 'test', 'test')).resolves.toEqual(
+        const mock: NevercodeWebhookResponse = NevercodeMock.generate();
+        const build = new Build(mock, 'master');
+
+        expect(pivotalTrackerService.processTasks(build)).resolves.toEqual(
             undefined
         );
     });
@@ -24,7 +30,10 @@ describe('Pivotal tracker service', () => {
         let tasks = ['123456789', '223456789'];
         PivotalTrackerMock.mockRequests(tasks, '1', 404);
 
-        expect(pivotalTrackerService.markAsDeliver(tasks, 'test', 'test')).rejects.not.toEqual(
+        const mock: NevercodeWebhookResponse = NevercodeMock.generate();
+        const build = new Build(mock, 'master');
+
+        expect(pivotalTrackerService.processTasks(build)).rejects.not.toEqual(
             undefined
         );
     });
