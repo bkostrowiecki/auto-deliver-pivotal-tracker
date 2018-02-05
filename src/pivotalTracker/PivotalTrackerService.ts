@@ -94,9 +94,9 @@ export class PivotalTrackerService {
     }
 
     private postComment(storyHash: StoryHash, buildLabel: string) {
-        return axios.post(this.buildStoryUrl(`/projects/${this.projectId}/stories/${storyHash}/comments`), JSON.stringify({
+        return axios.post(this.buildStoryUrl(`/projects/${this.projectId}/stories/${storyHash}/comments`), {
             text: '#' + buildLabel
-        }), this.headers);
+        }, this.headers);
     }
 
     private async getTask(storyHash: StoryHash) {
@@ -111,10 +111,10 @@ export class PivotalTrackerService {
     }
 
     private updateTask(story: Story) {
-        return axios.put(this.buildStoryUrl(story.id.toString()), JSON.stringify({
+        return axios.put(this.buildStoryUrl(story.id.toString()), {
             current_state: story.current_state,
             labels: story.labels
-        }), this.headers);
+        }, this.headers);
     }
 
     private buildStoryUrl(storyHash: StoryHash) {
