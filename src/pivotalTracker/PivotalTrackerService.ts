@@ -79,7 +79,7 @@ export class PivotalTrackerService {
 
         console.log('Request ' + postLabelUrl, JSON.stringify({ name: label }), JSON.stringify(this.headers, null, 4));
         try {
-            const response = await axios.post(postLabelUrl, JSON.stringify({ name: label }), this.headers);
+            const response = await axios.post(postLabelUrl, { name: label }, this.headers);
 
             console.log(JSON.stringify(response, null, 4));
 

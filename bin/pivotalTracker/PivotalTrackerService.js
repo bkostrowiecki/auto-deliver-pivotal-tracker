@@ -70,7 +70,7 @@ class PivotalTrackerService {
             let postLabelUrl = this.buildPivotalUrl('/projects/' + this.projectId + '/labels');
             console.log('Request ' + postLabelUrl, JSON.stringify({ name: label }), JSON.stringify(this.headers, null, 4));
             try {
-                const response = yield axios_1.default.post(postLabelUrl, JSON.stringify({ name: label }), this.headers);
+                const response = yield axios_1.default.post(postLabelUrl, { name: label }, this.headers);
                 console.log(JSON.stringify(response, null, 4));
                 return response;
             }
