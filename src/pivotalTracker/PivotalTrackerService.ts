@@ -91,7 +91,7 @@ export class PivotalTrackerService {
 
     private async getTask(storyHash: StoryHash) {
         const response = await axios.get(this.buildStoryUrl(storyHash), this.headers);
-        console.log(console.log(JSON.stringify(repsonse.data, null, 4)));
+        console.log(console.log(JSON.stringify(response.data, null, 4)));
         return response;
     }
 
