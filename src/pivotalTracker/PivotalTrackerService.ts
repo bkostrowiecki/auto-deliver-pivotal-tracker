@@ -49,14 +49,10 @@ export class PivotalTrackerService {
                     let story = response.data;
                     console.log(JSON.stringify(response.data, null, 4));
 
-                    console.log(story.labels);
-                    story.labels = story.labels.filter((label: StoryLabel) => label.name.indexOf(buildTag) === -1);
+                    story.labels = story.labels.filter((label: StoryLabel) => label.name.indexOf(buildTag + workflow) === -1);
 
-                    console.log(story.labels);
                     story.labels.push(buildLabel);
-                    console.log(story.labels);
 
-                    console.log(story.current_state);
                     if (story.current_state === PivotalTrackerStoryState.FINISHED) {
                         console.log('Current state changed to: ' + story.current_state);
                         story.current_state = PivotalTrackerStoryState.DELIVERED;
@@ -115,11 +111,17 @@ export class PivotalTrackerService {
         }
     }
 
-    private updateTask(story: Story) {
-        return axios.put(this.buildStoryUrl(story.id.toString()), {
-            current_state: story.current_state,
-            labels: story.labels
-        }, this.headers);
+    private async updateTask(story: Story) {
+        try {
+            const storyResponse = await axios.put(this.buildStoryUrl(story.id.toString()), {
+                current_state: story.current_state,
+                labels: story.labels
+            });
+            return storyResponse;
+        } catch (e) {
+            console.log(e, null, 4);
+        }
+
     }
 
     private buildStoryUrl(storyHash: StoryHash) {
