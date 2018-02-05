@@ -45,7 +45,6 @@ export class PivotalTrackerService {
                 console.log(responses.length);
                 let updateTaskPromises = responses.map((response: AxiosResponse) => {
                     console.log('TASK');
-                    console.log(response);
 
                     let story = response.data;
                     console.log(JSON.stringify(response.data, null, 4));
