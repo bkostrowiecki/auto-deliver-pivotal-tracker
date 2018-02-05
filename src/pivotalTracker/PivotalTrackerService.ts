@@ -33,6 +33,8 @@ export class PivotalTrackerService {
             const buildLabelText = this.buildLabel(workflow, buildString);
 
             let buildLabelResponse = await this.postBuildLabel(buildLabelText);
+
+            console.log('Response: ', JSON.stringify(buildLabelResponse, null, 4));
             let buildLabel = buildLabelResponse.data;
 
             let promises = tasks.map((task: StoryHash) => {
@@ -41,6 +43,7 @@ export class PivotalTrackerService {
 
             axios.all(promises).then(axios.spread((...responses) => {
                 let updateTaskPromises = responses.map((response: AxiosResponse) => {
+                    
                     let story = response.data;
                     console.log(JSON.stringify(response.data, null, 4));
 

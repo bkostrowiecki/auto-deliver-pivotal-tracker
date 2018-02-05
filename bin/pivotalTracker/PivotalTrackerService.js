@@ -31,6 +31,7 @@ class PivotalTrackerService {
             return new Promise((resolve, reject) => __awaiter(this, void 0, void 0, function* () {
                 const buildLabelText = this.buildLabel(workflow, buildString);
                 let buildLabelResponse = yield this.postBuildLabel(buildLabelText);
+                console.log('Response: ', JSON.stringify(buildLabelResponse, null, 4));
                 let buildLabel = buildLabelResponse.data;
                 let promises = tasks.map((task) => {
                     return this.getTask(task);
