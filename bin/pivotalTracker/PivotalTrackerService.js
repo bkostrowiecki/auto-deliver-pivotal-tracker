@@ -66,9 +66,10 @@ class PivotalTrackerService {
     postBuildLabel(label) {
         return __awaiter(this, void 0, void 0, function* () {
             let postLabelUrl = this.buildPivotalUrl('/projects/' + this.projectId + '/labels');
-            return axios_1.default.post(postLabelUrl, {
-                name: label
-            }, this.headers);
+            console.log('Request ' + postLabelUrl);
+            const response = yield axios_1.default.post(postLabelUrl, { name: label }, this.headers);
+            console.log(JSON.stringify(response, null, 4));
+            return response;
         });
     }
     buildLabel(workflow, buildString) {
