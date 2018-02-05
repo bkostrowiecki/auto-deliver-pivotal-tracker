@@ -96,7 +96,7 @@ export class PivotalTrackerService {
 
     private postComment(storyHash: StoryHash, buildLabel: string) {
         return axios.post(this.buildStoryUrl(storyHash) + `/comments`, {
-            text: '#' + buildLabel
+            text: '# ' + buildLabel
         });
     }
 

@@ -83,7 +83,7 @@ class PivotalTrackerService {
     }
     postComment(storyHash, buildLabel) {
         return axios_1.default.post(this.buildStoryUrl(storyHash) + `/comments`, {
-            text: '#' + buildLabel
+            text: '# ' + buildLabel
         });
     }
     getTask(storyHash) {
