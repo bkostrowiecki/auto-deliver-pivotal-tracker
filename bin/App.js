@@ -58,6 +58,11 @@ class App {
                 console.log(JSON.stringify(e, null, 4), JSON.stringify(req.body, null, 4), JSON.stringify({
                     workflow
                 }, null, 4));
+                res.status(400).json({
+                    error: JSON.stringify(e, null, 4),
+                    body: JSON.stringify(req.body, null, 4),
+                    workflow: workflow
+                });
             }
         }));
         this.express.use('/', router);
