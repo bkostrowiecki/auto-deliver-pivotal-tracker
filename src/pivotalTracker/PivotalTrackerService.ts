@@ -39,15 +39,23 @@ export class PivotalTrackerService {
             axios.all(promises).then(axios.spread((...responses) => {
                 let updateTaskPromises = responses.map((response: AxiosResponse) => {
                     let story = response.data;
+                    console.log(JSON.stringify(response.data, null, 4));
+
+                    console.log(story.labels);
                     story.labels = story.labels.filter((label: StoryLabel) => label.name.indexOf(buildTag) === -1);
 
+                    console.log(story.labels);
                     story.labels.push(buildLabel);
+                    console.log(story.labels);
 
+                    console.log(story.current_state);
                     if (story.current_state === PivotalTrackerStoryState.FINISHED) {
+                        console.log('Current state changed to: ' + story.current_state);
                         story.current_state = PivotalTrackerStoryState.DELIVERED;
                     }
 
                     return this.updateTask(story).then((response: AxiosResponse) => {
+                        console.log(JSON.stringify(response.data, null, 4));
                         return this.postComment(story.id, buildLabel);
                     });
                 });

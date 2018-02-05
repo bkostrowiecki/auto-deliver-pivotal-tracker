@@ -44,5 +44,5 @@ export default interface NevercodeWebhookResponse {
         },
         version: string,
         web_url: string
-    },
+    }
 };
