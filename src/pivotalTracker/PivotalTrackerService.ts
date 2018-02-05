@@ -78,12 +78,15 @@ export class PivotalTrackerService {
         let postLabelUrl = this.buildPivotalUrl('/projects/' + this.projectId + '/labels');
 
         console.log('Request ' + postLabelUrl, JSON.stringify(this.headers, null, 4));
+        try {
         const response = await axios.post(postLabelUrl, JSON.stringify({ name: label }), this.headers);
 
         console.log(JSON.stringify(response, null, 4));
 
         return response;
-
+        } catch (e) {
+            console.log(JSON.stringify(e, null, 4));
+        }
     }
 
     private buildLabel(workflow: string, buildString: string) {
