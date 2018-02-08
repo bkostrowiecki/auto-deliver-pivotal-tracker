@@ -2,10 +2,14 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const Commit_1 = require("./nevercode/Commit");
 class Build {
-    constructor(response, workflow) {
+    constructor(response, workflow, shouldDeliver = false) {
         this.response = response;
         this.workflow = workflow;
+        this.shouldDeliver = shouldDeliver;
         this.MISSING_PROPERTY_ERROR = 'Some required property is missing';
+    }
+    shouldDeliverTasks() {
+        return this.shouldDeliver;
     }
     getTasks() {
         const tasks = this.response.build.changes

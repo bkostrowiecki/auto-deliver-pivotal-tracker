@@ -6,6 +6,10 @@ class Commit {
         this.message = message;
     }
     getTaskHashes() {
+        let pullRequestsMerge = this.message.match(/Merge pull request ([0-9]*)/gi);
+        if (pullRequestsMerge != null) {
+            return [];
+        }
         let matches = this.message.match(/\#([0-9]*)/g);
         if (!matches) {
             return [];

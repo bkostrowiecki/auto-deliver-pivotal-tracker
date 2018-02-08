@@ -28,6 +28,7 @@ class PivotalTrackerService {
             const tasks = build.getTasks();
             const workflow = build.getWorkflow();
             const buildString = build.getBuildString();
+            const shouldDeliver = build.shouldDeliverTasks();
             return new Promise((resolve, reject) => __awaiter(this, void 0, void 0, function* () {
                 const buildLabelText = this.buildLabel(workflow, buildString);
                 let buildLabelResponse = yield this.postBuildLabel(buildLabelText);
@@ -44,7 +45,7 @@ class PivotalTrackerService {
                         console.log(JSON.stringify(response.data, null, 4));
                         story.labels = story.labels.filter((label) => label.name.indexOf(buildTag + workflow) === -1);
                         story.labels.push(buildLabel);
-                        if (story.current_state === PivotalTrackerStoryState_1.PivotalTrackerStoryState.FINISHED) {
+                        if (story.current_state === PivotalTrackerStoryState_1.PivotalTrackerStoryState.FINISHED && shouldDeliver) {
                             console.log('Current state changed to: ' + story.current_state);
                             story.current_state = PivotalTrackerStoryState_1.PivotalTrackerStoryState.DELIVERED;
                         }

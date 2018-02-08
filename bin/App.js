@@ -42,8 +42,9 @@ class App {
         });
         router.post('/nevercode-hook', (req, res, next) => __awaiter(this, void 0, void 0, function* () {
             const workflow = req.query.workflow;
+            const shouldDeliver = req.query.shouldDeliver === '1';
             try {
-                const build = new Build_1.Build(req.body, workflow);
+                const build = new Build_1.Build(req.body, workflow, shouldDeliver);
                 const tasks = build.getTasks();
                 console.log('Found tasks ', tasks);
                 const deliveredTasks = yield this.pivotalTrackerService.processTasks(build);
