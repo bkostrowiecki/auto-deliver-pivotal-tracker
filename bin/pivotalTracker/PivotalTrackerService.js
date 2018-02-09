@@ -36,6 +36,8 @@ class PivotalTrackerService {
                 let promises = tasks.map((task) => {
                     console.log(task);
                     return this.getTask(task);
+                }).filter((task) => {
+                    return task !== undefined;
                 });
                 axios_1.default.all(promises).then(axios_1.default.spread((...responses) => {
                     console.log(responses.length);
@@ -52,6 +54,8 @@ class PivotalTrackerService {
                         return this.updateTask(story).then((response) => {
                             console.log(JSON.stringify(response.data, null, 4));
                             return this.postComment(story.id, buildLabel);
+                        }, () => {
+                            return new Promise((resolve) => resolve());
                         });
                     });
                     return axios_1.default.all(updateTaskPromises);
@@ -111,6 +115,7 @@ class PivotalTrackerService {
             }
             catch (e) {
                 console.log(e, null, 4);
+                return undefined;
             }
         });
     }

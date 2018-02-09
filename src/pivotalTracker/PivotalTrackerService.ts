@@ -40,7 +40,9 @@ export class PivotalTrackerService {
             let promises = tasks.map((task: StoryHash) => {
                 console.log(task);
                 return this.getTask(task);
-            });
+            }).filter((task?: any) => {
+                return task !== undefined;
+            })
 
             axios.all(promises).then(axios.spread((...responses) => {
                 console.log(responses.length);
@@ -62,6 +64,8 @@ export class PivotalTrackerService {
                     return this.updateTask(story).then((response: AxiosResponse) => {
                         console.log(JSON.stringify(response.data, null, 4));
                         return this.postComment(story.id, buildLabel);
+                    }, () => {
+                        return new Promise((resolve) => resolve());
                     });
                 });
 
@@ -121,6 +125,7 @@ export class PivotalTrackerService {
             return storyResponse;
         } catch (e) {
             console.log(e, null, 4);
+            return undefined;
         }
 
     }
