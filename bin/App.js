@@ -56,10 +56,10 @@ class App {
                 });
             }
             catch (e) {
-                console.log(JSON.stringify(e, null, 4), JSON.stringify(req.body, null, 4), JSON.stringify({
+                console.log('ERROR', JSON.stringify(e), 'REQ.BODY', JSON.stringify(req.body), 'WORKFLOW', JSON.stringify({
                     workflow
-                }, null, 4));
-                res.status(400).json({
+                }));
+                res.status(500).json({
                     error: JSON.stringify(e, null, 4),
                     body: JSON.stringify(req.body, null, 4),
                     workflow: workflow
