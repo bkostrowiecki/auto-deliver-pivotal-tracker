@@ -41,10 +41,16 @@ describe('Commit', () => {
         let commit = new Commit_1.default('SHA1HASH', '[#150711864] Filtrowanie grup');
         expect(commit.getTaskHashes()[0]).toEqual('150711864');
     });
-    it('Should ignore commits which are merge pull requests', () => {
+    it('Should ignore pull request hash', () => {
         let commit = new Commit_1.default('SHA1HASH', 'Merge pull request #176 from Epicode/feature/zmiana-komunikatu-o-niewspieranych-typach-pytan-w-ankiecie');
         expect(commit.getTaskHashes().length).toEqual(0);
         expect(commit.getTaskHashes()[0]).not.toEqual('#176');
+    });
+    it('Should ignore pull request hash and get feature hash', () => {
+        let commit = new Commit_1.default('SHA1HASH', 'Merge pull request #176 from Epicode/feature/zmiana-komunikatu-o-niewspieranych-typach-pytan-w-ankiecie [Finishes #1234567]');
+        expect(commit.getTaskHashes().length).toEqual(1);
+        expect(commit.getTaskHashes()[0]).not.toEqual('#176');
+        expect(commit.getTaskHashes()[0]).toEqual('1234567');
     });
 });
 //# sourceMappingURL=Commit.test.js.map
