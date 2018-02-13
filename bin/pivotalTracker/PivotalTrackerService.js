@@ -33,15 +33,14 @@ class PivotalTrackerService {
                 const buildLabelText = this.buildLabel(workflow, buildString);
                 let buildLabelResponse = yield this.postBuildLabel(buildLabelText);
                 let buildLabel = buildLabelText;
-                let promises = tasks.map((task) => __awaiter(this, void 0, void 0, function* () {
-                    console.log('GET TASK');
-                    console.log(task);
-                    return yield this.getTask(task);
-                })).filter((task) => {
-                    console.log('TASK RESPONSE');
-                    console.log(task);
-                    return task !== undefined;
-                });
+                let promises = [];
+                for (let i = 0; i < tasks.length; i++) {
+                    try {
+                        promises.push(yield this.getTask(tasks[i]));
+                    }
+                    catch (e) {
+                    }
+                }
                 axios_1.default.all(promises).then(axios_1.default.spread((...responses) => {
                     console.log(responses.length);
                     let updateTaskPromises = responses.map((response) => {
