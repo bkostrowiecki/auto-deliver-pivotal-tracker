@@ -37,12 +37,12 @@ export class PivotalTrackerService {
 
             let buildLabel = buildLabelText;
 
-            let promises = tasks.map((task: StoryHash) => {
+            let promises = tasks.map(async (task: StoryHash) => {
                 console.log(task);
-                return this.getTask(task);
+                return await this.getTask(task);
             }).filter((task?: any) => {
                 return task !== undefined;
-            })
+            });
 
             axios.all(promises).then(axios.spread((...responses) => {
                 console.log(responses.length);
@@ -92,6 +92,7 @@ export class PivotalTrackerService {
             return response;
         } catch (e) {
             console.log(JSON.stringify(e, null, 4));
+            return undefined;
         }
     }
 
