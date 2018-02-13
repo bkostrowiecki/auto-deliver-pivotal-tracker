@@ -42,6 +42,8 @@ export class PivotalTrackerService {
                 console.log(task);
                 return await this.getTask(task);
             }).filter((task?: any) => {
+                console.log('TASK RESPONSE');
+                console.log(task);
                 return task !== undefined;
             });
 

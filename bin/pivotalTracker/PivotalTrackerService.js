@@ -38,6 +38,8 @@ class PivotalTrackerService {
                     console.log(task);
                     return yield this.getTask(task);
                 })).filter((task) => {
+                    console.log('TASK RESPONSE');
+                    console.log(task);
                     return task !== undefined;
                 });
                 axios_1.default.all(promises).then(axios_1.default.spread((...responses) => {
