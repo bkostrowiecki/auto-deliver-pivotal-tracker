@@ -38,6 +38,7 @@ export class PivotalTrackerService {
             let buildLabel = buildLabelText;
 
             let promises = tasks.map(async (task: StoryHash) => {
+                console.log('GET TASK');
                 console.log(task);
                 return await this.getTask(task);
             }).filter((task?: any) => {
