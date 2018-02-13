@@ -114,6 +114,7 @@ export class PivotalTrackerService {
             console.log(console.log(JSON.stringify(response.data, null, 4)));
             return response;
         } catch (e) {
+            console.log('Response error');
             console.log(JSON.stringify(e, null, 4));
             return undefined;
         }
