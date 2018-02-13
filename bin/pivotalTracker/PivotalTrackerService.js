@@ -33,10 +33,11 @@ class PivotalTrackerService {
                 const buildLabelText = this.buildLabel(workflow, buildString);
                 let buildLabelResponse = yield this.postBuildLabel(buildLabelText);
                 let buildLabel = buildLabelText;
-                let promises = tasks.map((task) => {
+                let promises = tasks.map((task) => __awaiter(this, void 0, void 0, function* () {
+                    console.log('GET TASK');
                     console.log(task);
-                    return this.getTask(task);
-                }).filter((task) => {
+                    return yield this.getTask(task);
+                })).filter((task) => {
                     return task !== undefined;
                 });
                 axios_1.default.all(promises).then(axios_1.default.spread((...responses) => {
@@ -80,6 +81,7 @@ class PivotalTrackerService {
             }
             catch (e) {
                 console.log(JSON.stringify(e, null, 4));
+                return undefined;
             }
         });
     }
@@ -101,6 +103,7 @@ class PivotalTrackerService {
             }
             catch (e) {
                 console.log(JSON.stringify(e, null, 4));
+                return undefined;
             }
         });
     }
