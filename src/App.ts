@@ -6,7 +6,9 @@ import { PivotalTrackerService } from './pivotalTracker/PivotalTrackerService';
 import * as fs from 'fs';
 import * as moment from 'moment';
 import { StoryHash } from './pivotalTracker/task';
-import { Build } from './Build';
+import { NevercodeBuild } from './nevercode/NevercodeBuild';
+import { Routes } from './Routes';
+import { TeamcityService } from './teamcity/TeamcityService';
 
 // Creates and configures an ExpressJS web server.
 class App {
@@ -14,6 +16,7 @@ class App {
     public express: express.Application;
 
     private pivotalTrackerService: PivotalTrackerService;
+    private teamcityService: TeamcityService;
 
     //Run configuration methods on the Express instance.
     constructor() {
@@ -21,7 +24,7 @@ class App {
         this.middleware();
         this.routes();
 
-        this.pivotalTrackerService = new PivotalTrackerService();
+        this.teamcityService = new TeamcityService();
     }
 
     // Configure Express middleware.
@@ -44,55 +47,9 @@ class App {
             });
         });
 
-        router.post(
-            '/nevercode-hook',
-            async (
-                req: express.Request,
-                res: express.Response,
-                next: express.NextFunction
-            ) => {
-                const workflow = req.query.workflow;
-                const shouldDeliver = req.query.shouldDeliver === '1';
-
-                try {
-                    const build = new Build(req.body, workflow, shouldDeliver);
-
-                    const tasks = build.getTasks();
-
-                    console.log('Found tasks ', tasks);
-                    const deliveredTasks = await this.pivotalTrackerService.processTasks(build);
-                    console.log(
-                        'Tasks ',
-                        deliveredTasks,
-                        ' were successfully marked as delivered'
-                    );
-                    return res.json({
-                        status: 'OK',
-                        deliveredTasks,
-                        workflow
-                    });
-                } catch (e) {
-                    console.log(
-                        'ERROR',
-                        JSON.stringify(e),
-                        'REQ.BODY',
-                        JSON.stringify(req.body),
-                        'WORKFLOW',
-                        JSON.stringify({
-                            workflow
-                        })
-                    );
-                    res.status(500).json({
-                        error: JSON.stringify(e, null, 4),
-                        body: JSON.stringify(
-                            req.body,
-                            null,
-                            4
-                        ),
-                        workflow: workflow
-                    });
-                }
-            }
+        const routes = new Routes(
+            router,
+            this.teamcityService
         );
 
         this.express.use('/', router);

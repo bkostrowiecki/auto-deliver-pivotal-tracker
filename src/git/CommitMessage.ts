@@ -1,6 +1,6 @@
 
-export default class Commit {
-    constructor(private hash: string, private message: string) {
+export class CommitMessage {
+    constructor(private message: string) {
     }
 
     getTaskHashes(): string[] {

@@ -1,9 +1,10 @@
-import NevercodeWebhookResponse from "./nevercode/NevercodeWebhookResponse";
-import { StoryHash } from "./pivotalTracker/Task";
-import { NevercodeChange } from "./nevercode/NevercodeChange";
-import Commit from "./nevercode/Commit";
+import NevercodeWebhookResponse from '../nevercode/NevercodeWebhookResponse';
+import { StoryHash } from '../pivotalTracker/Task';
+import { NevercodeChange } from '../nevercode/NevercodeChange';
+import { CommitMessage } from '../git/CommitMessage';
+import { PivotalTrackerProcessable } from '../pivotalTracker/PivotalTrackerProcessable';
 
-export class Build {
+export class NevercodeBuild implements PivotalTrackerProcessable {
     private MISSING_PROPERTY_ERROR = 'Some required property is missing';
 
     constructor(private response: NevercodeWebhookResponse, private workflow: string, private shouldDeliver: boolean = false) {
@@ -13,11 +14,10 @@ export class Build {
         return this.shouldDeliver;
     }
 
-    getTasks(): StoryHash[] {
+    getTasks(): Promise<StoryHash[]> {
         const tasks = this.response.build.changes
             .map((change: NevercodeChange) => {
-                return new Commit(
-                    change.commit_hash,
+                return new CommitMessage(
                     change.description
                 ).getTaskHashes();
             })
@@ -25,7 +25,10 @@ export class Build {
                 prev = prev.concat(tasks);
                 return prev;
             }, []);
-        return this.removeDuplicates(tasks);
+
+        return new Promise((resolve) => {
+            resolve(this.removeDuplicates(tasks))
+        });
     }
 
     getBuildString(): string {

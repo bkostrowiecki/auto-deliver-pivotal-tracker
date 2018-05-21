@@ -1,20 +1,19 @@
 import axios, { AxiosResponse } from 'axios';
 import { PivotalTrackerStoryState } from './PivotalTrackerStoryState';
 import { Story, StoryHash, StoryLabel } from './Task';
-import { Build } from '../Build';
+import { PivotalTrackerProcessable } from './PivotalTrackerProcessable';
 
 const buildTag = 'build-';
 
 export class PivotalTrackerService {
     private pivotalUrl = 'https://wwww.pivotaltracker.com/services/v5';
     private token = process.env.PIVOTAL_TOKEN;
-    private projectId = process.env.PIVOTAL_PROJECT_ID;
 
     private headers;
     private workflow: string;
     private buildString: string;
 
-    constructor() {
+    constructor(private pivotalProjectId: number) {
         this.headers = {
             'Content-Type': 'application/json',
             'X-TrackerToken': this.token
@@ -24,8 +23,8 @@ export class PivotalTrackerService {
         axios.defaults.headers.common['X-TrackerToken'] = this.token;
     }
 
-    async processTasks(build: Build) {
-        const tasks = build.getTasks();
+    async processTasks(build: PivotalTrackerProcessable) {
+        const tasks = await build.getTasks();
         const workflow = build.getWorkflow();
         const buildString = build.getBuildString();
         const shouldDeliver = build.shouldDeliverTasks();
@@ -83,7 +82,7 @@ export class PivotalTrackerService {
     }
 
     private async postBuildLabel(label: string) {
-        let postLabelUrl = this.buildPivotalUrl('/projects/' + this.projectId + '/labels');
+        let postLabelUrl = this.buildPivotalUrl('/projects/' + this.pivotalProjectId + '/labels');
 
         console.log('Request ' + postLabelUrl, JSON.stringify({ name: label }), JSON.stringify(this.headers, null, 4));
         try {
@@ -136,7 +135,7 @@ export class PivotalTrackerService {
     }
 
     private buildStoryUrl(storyHash: StoryHash) {
-        return this.buildPivotalUrl('/projects/' + this.projectId + '/stories/' + storyHash);
+        return this.buildPivotalUrl('/projects/' + this.pivotalProjectId + '/stories/' + storyHash);
     }
 
     private buildPivotalUrl(url: string) {

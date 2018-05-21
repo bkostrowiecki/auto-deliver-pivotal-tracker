@@ -12,10 +12,10 @@ const axios_1 = require("axios");
 const PivotalTrackerStoryState_1 = require("./PivotalTrackerStoryState");
 const buildTag = 'build-';
 class PivotalTrackerService {
-    constructor() {
+    constructor(pivotalProjectId) {
+        this.pivotalProjectId = pivotalProjectId;
         this.pivotalUrl = 'https://wwww.pivotaltracker.com/services/v5';
         this.token = process.env.PIVOTAL_TOKEN;
-        this.projectId = process.env.PIVOTAL_PROJECT_ID;
         this.headers = {
             'Content-Type': 'application/json',
             'X-TrackerToken': this.token
@@ -25,7 +25,7 @@ class PivotalTrackerService {
     }
     processTasks(build) {
         return __awaiter(this, void 0, void 0, function* () {
-            const tasks = build.getTasks();
+            const tasks = yield build.getTasks();
             const workflow = build.getWorkflow();
             const buildString = build.getBuildString();
             const shouldDeliver = build.shouldDeliverTasks();
@@ -73,7 +73,7 @@ class PivotalTrackerService {
     }
     postBuildLabel(label) {
         return __awaiter(this, void 0, void 0, function* () {
-            let postLabelUrl = this.buildPivotalUrl('/projects/' + this.projectId + '/labels');
+            let postLabelUrl = this.buildPivotalUrl('/projects/' + this.pivotalProjectId + '/labels');
             console.log('Request ' + postLabelUrl, JSON.stringify({ name: label }), JSON.stringify(this.headers, null, 4));
             try {
                 const response = yield axios_1.default.post(postLabelUrl, { name: label }, this.headers);
@@ -125,7 +125,7 @@ class PivotalTrackerService {
         });
     }
     buildStoryUrl(storyHash) {
-        return this.buildPivotalUrl('/projects/' + this.projectId + '/stories/' + storyHash);
+        return this.buildPivotalUrl('/projects/' + this.pivotalProjectId + '/stories/' + storyHash);
     }
     buildPivotalUrl(url) {
         return this.pivotalUrl + url;

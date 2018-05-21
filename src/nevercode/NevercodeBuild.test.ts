@@ -1,11 +1,11 @@
-import { Build } from './Build';
-import NevercodeWebhookResponse from './nevercode/NevercodeWebhookResponse';
-import { NevercodeChange } from './nevercode/NevercodeChange';
-import NevercodeMock from './nevercode/NevercodeMock';
+import { NevercodeBuild } from './NevercodeBuild';
+import NevercodeWebhookResponse from './NevercodeWebhookResponse';
+import { NevercodeChange } from './NevercodeChange';
+import NevercodeMock from './NevercodeMock';
 
 describe('Build', () => {
     it('Should create build string', () => {
-        const build = new Build({
+        const build = new NevercodeBuild({
             build: {
                 version: '2.0.0',
                 build_number: 1
@@ -16,7 +16,7 @@ describe('Build', () => {
     });
 
     it('Should throw error because lack of build number', () => {
-        const build = new Build({
+        const build = new NevercodeBuild({
             build: {
                 version: '2.0.0'
             }
@@ -26,7 +26,7 @@ describe('Build', () => {
     });
 
     it('Should throw error because lack of version', () => {
-        const build = new Build({
+        const build = new NevercodeBuild({
             build: {
                 build_number: 1
             }
@@ -38,7 +38,7 @@ describe('Build', () => {
     });
 
     it('Should not throw error because lack of build number if build number is equal 0', () => {
-        const build = new Build({
+        const build = new NevercodeBuild({
             build: {
                 build_number: 0,
                 version: "2.0.0"
@@ -51,7 +51,7 @@ describe('Build', () => {
     });
 
     it('Should get branch string', () => {
-        const build = new Build({
+        const build = new NevercodeBuild({
             build_config: {
                 branch: 'master'
             }
@@ -61,7 +61,7 @@ describe('Build', () => {
     });
 
     it('Should throw if branch string is not available', () => {
-        const build = new Build({
+        const build = new NevercodeBuild({
             build_config: {
             }
         } as any, 'master');
@@ -75,7 +75,7 @@ describe('Build', () => {
         let mock = NevercodeMock.generate();
         mock.build.changes.push(new NevercodeChange('Marek Niejadek', '6d411374b8a7c38f70c3c42b0f2cd4e8363f3fd8', '2014-10-27T11:05:40Z', '[#12345678] Commit message'));
 
-        let build = new Build(mock, 'master');
+        let build = new NevercodeBuild(mock, 'master');
         let tasksToDeliver = await build.getTasks();
 
         expect(tasksToDeliver.length).toEqual(1);
@@ -87,7 +87,7 @@ describe('Build', () => {
         mock.build.changes.push(new NevercodeChange('Marek Niejadek', '6d411374b8a7c38f70c3c42b0f2cd4e8363f3fd8', '2014-10-27T11:05:40Z', '[#12345678] Commit message'));
         mock.build.changes.push(new NevercodeChange('Turkuć Podjadek', '6d411374b8a7c38f70c3c42b0f2cd4e8363f3fd9', '2014-09-27T11:05:40Z', '[#987654321] Commit message'));
 
-        let build = new Build(mock, 'master');
+        let build = new NevercodeBuild(mock, 'master');
         let tasksToDeliver = await build.getTasks();
 
         expect(tasksToDeliver.length).toEqual(2);
@@ -101,7 +101,7 @@ describe('Build', () => {
         mock.build.changes.push(new NevercodeChange('Turkuć Podjadek', '6d411374b8a7c38f70c3c42b0f2cd4e8363f3fd9', '2014-09-27T11:05:40Z', '[#987654321] Commit message'));
         mock.build.changes.push(new NevercodeChange('Marek Niejadek', 'ad411374b8a7c38f70c3c42b0f2cd4e8363f3fd2', '2014-10-27T11:25:40Z', '[#12345678] Other commit message'));
 
-        let build = new Build(mock, 'master');
+        let build = new NevercodeBuild(mock, 'master');
         let tasksToDeliver = await build.getTasks();
 
         expect(tasksToDeliver.length).toEqual(2);
@@ -114,7 +114,7 @@ describe('Build', () => {
         mock.build.version = '2.0.0';
         mock.build.build_number = 42;
 
-        let build = new Build(mock, 'master');
+        let build = new NevercodeBuild(mock, 'master');
         let buildString = build.getBuildString();
 
         expect(buildString).toEqual('2.0.0-42');
@@ -123,7 +123,7 @@ describe('Build', () => {
     it('Should get workflow name', () => {
         let mock = NevercodeMock.generate();
         
-        let build = new Build(mock, 'master');
+        let build = new NevercodeBuild(mock, 'master');
         let workflow = build.getWorkflow();
 
         expect(workflow).toEqual('master');

@@ -1,18 +1,10 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const express = require("express");
 const logger = require("morgan");
 const bodyParser = require("body-parser");
-const PivotalTrackerService_1 = require("./pivotalTracker/PivotalTrackerService");
-const Build_1 = require("./Build");
+const Routes_1 = require("./Routes");
+const TeamcityService_1 = require("./teamcity/TeamcityService");
 // Creates and configures an ExpressJS web server.
 class App {
     //Run configuration methods on the Express instance.
@@ -20,7 +12,7 @@ class App {
         this.express = express();
         this.middleware();
         this.routes();
-        this.pivotalTrackerService = new PivotalTrackerService_1.PivotalTrackerService();
+        this.teamcityService = new TeamcityService_1.TeamcityService();
     }
     // Configure Express middleware.
     middleware() {
@@ -40,32 +32,7 @@ class App {
                 message: 'Hello World!'
             });
         });
-        router.post('/nevercode-hook', (req, res, next) => __awaiter(this, void 0, void 0, function* () {
-            const workflow = req.query.workflow;
-            const shouldDeliver = req.query.shouldDeliver === '1';
-            try {
-                const build = new Build_1.Build(req.body, workflow, shouldDeliver);
-                const tasks = build.getTasks();
-                console.log('Found tasks ', tasks);
-                const deliveredTasks = yield this.pivotalTrackerService.processTasks(build);
-                console.log('Tasks ', deliveredTasks, ' were successfully marked as delivered');
-                return res.json({
-                    status: 'OK',
-                    deliveredTasks,
-                    workflow
-                });
-            }
-            catch (e) {
-                console.log('ERROR', JSON.stringify(e), 'REQ.BODY', JSON.stringify(req.body), 'WORKFLOW', JSON.stringify({
-                    workflow
-                }));
-                res.status(500).json({
-                    error: JSON.stringify(e, null, 4),
-                    body: JSON.stringify(req.body, null, 4),
-                    workflow: workflow
-                });
-            }
-        }));
+        const routes = new Routes_1.Routes(router, this.teamcityService);
         this.express.use('/', router);
     }
 }
