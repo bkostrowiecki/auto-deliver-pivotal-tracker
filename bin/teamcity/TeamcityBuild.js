@@ -21,7 +21,9 @@ class TeamcityBuild {
     }
     getTasks() {
         return __awaiter(this, void 0, void 0, function* () {
+            console.log('Get tasks');
             const commitMessages = yield this.teamcityService.getCommitMessagesFromBuild(this.response.buildId);
+            console.log(commitMessages);
             const tasks = commitMessages
                 .map((commit) => {
                 return commit.getTaskHashes();

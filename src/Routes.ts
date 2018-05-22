@@ -66,15 +66,20 @@ export class Routes {
 
         console.log('Body: ', req.body);
 
+        console.log('Pivotal tracker service creation...');
         const pivotalTrackerService = new PivotalTrackerService(hookParameters.getPivotalProjectId());
+        console.log('Pivotal tracker service created');
 
         try {
+            console.log('Teamcity build creation...');
             const build = new TeamcityBuild(
                 req.body,
                 this.teamcityService,
                 hookParameters.getWorkflow(),
                 hookParameters.shouldDeliver()
             );
+
+            console.log('Teamcity build created');
 
             const deliveredTasks = await pivotalTrackerService.processTasks(build);
             this.logDeliveredTasks(deliveredTasks);

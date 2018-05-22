@@ -50,9 +50,13 @@ class Routes {
             const hookParameters = new HookParameters_1.HookParameters(req);
             const workflow = hookParameters.getWorkflow();
             console.log('Body: ', req.body);
+            console.log('Pivotal tracker service creation...');
             const pivotalTrackerService = new PivotalTrackerService_1.PivotalTrackerService(hookParameters.getPivotalProjectId());
+            console.log('Pivotal tracker service created');
             try {
+                console.log('Teamcity build creation...');
                 const build = new TeamcityBuild_1.TeamcityBuild(req.body, this.teamcityService, hookParameters.getWorkflow(), hookParameters.shouldDeliver());
+                console.log('Teamcity build created');
                 const deliveredTasks = yield pivotalTrackerService.processTasks(build);
                 this.logDeliveredTasks(deliveredTasks);
                 return res.json({
