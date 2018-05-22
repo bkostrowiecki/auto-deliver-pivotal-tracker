@@ -57,6 +57,7 @@ class TeamcityService {
             catch (e) {
                 console.log(e);
             }
+            console.log(changeXml);
             return new TeamcityChange_1.TeamcityChange(changeXml);
         });
     }
