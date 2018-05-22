@@ -24,6 +24,7 @@ export class PivotalTrackerService {
     }
 
     async processTasks(build: PivotalTrackerProcessable) {
+        console.log('Process buid...');
         const tasks = await build.getTasks();
         const workflow = build.getWorkflow();
         const buildString = build.getBuildString();

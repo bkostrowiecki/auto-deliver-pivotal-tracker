@@ -25,6 +25,7 @@ class PivotalTrackerService {
     }
     processTasks(build) {
         return __awaiter(this, void 0, void 0, function* () {
+            console.log('Process buid...');
             const tasks = yield build.getTasks();
             const workflow = build.getWorkflow();
             const buildString = build.getBuildString();
