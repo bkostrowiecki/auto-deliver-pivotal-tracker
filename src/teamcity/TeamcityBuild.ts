@@ -19,7 +19,7 @@ export class TeamcityBuild implements PivotalTrackerProcessable {
 
     async getTasks(): Promise<StoryHash[]> {
         this.validateTeamcityService();
-        
+
         console.log('Get tasks');
         console.log(this.response.buildId);
         const commitMessages = await this.teamcityService.getCommitMessagesFromBuild(this.response.buildId);
@@ -66,5 +66,6 @@ export class TeamcityBuild implements PivotalTrackerProcessable {
             console.log('No teamcity service available');
             throw 'No teamcity service available';
         }
+        console.log('Teamcity service found');
     }
 }
