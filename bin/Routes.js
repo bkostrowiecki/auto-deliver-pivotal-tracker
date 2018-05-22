@@ -49,7 +49,7 @@ class Routes {
         return __awaiter(this, void 0, void 0, function* () {
             const hookParameters = new HookParameters_1.HookParameters(req);
             const workflow = hookParameters.getWorkflow();
-            console.log('Body: ' + JSON.stringify(req.body));
+            console.log('Body: ', req.body);
             const pivotalTrackerService = new PivotalTrackerService_1.PivotalTrackerService(hookParameters.getPivotalProjectId());
             try {
                 const build = new TeamcityBuild_1.TeamcityBuild(req.body, this.teamcityService, hookParameters.getWorkflow(), hookParameters.shouldDeliver());
