@@ -64,6 +64,8 @@ export class Routes {
         const hookParameters = new HookParameters(req);
         const workflow = hookParameters.getWorkflow();
 
+        console.log('Body: ' + JSON.stringify(req.body));
+
         const pivotalTrackerService = new PivotalTrackerService(hookParameters.getPivotalProjectId());
 
         try {
