@@ -29,11 +29,13 @@ class TeamcityService {
         return __awaiter(this, void 0, void 0, function* () {
             let changesResponse;
             let changesXml;
+            console.log('Parsing external XML for changes');
             try {
                 changesResponse = yield node_fetch_1.default(`${this.baseUrl}/changes?locator=build:id:${buildId}`);
                 changesXml = yield changesResponse.text();
             }
             catch (e) {
+                console.log('Cannot parse XML');
                 console.log(e);
             }
             console.log(changesXml);
@@ -50,11 +52,13 @@ class TeamcityService {
         return __awaiter(this, void 0, void 0, function* () {
             let changeResponse;
             let changeXml;
+            console.log('Parsing external XML for changes');
             try {
                 changeResponse = yield node_fetch_1.default(`${this.baseUrl}/changes/id:${changeId}`);
                 changeXml = yield changeResponse.text();
             }
             catch (e) {
+                console.log('Cannot parse XML');
                 console.log(e);
             }
             console.log(changeXml);

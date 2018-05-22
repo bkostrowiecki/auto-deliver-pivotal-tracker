@@ -21,10 +21,12 @@ export class TeamcityService {
         let changesResponse: any;
         let changesXml: string;
         
+        console.log('Parsing external XML for changes');
         try {
             changesResponse = await fetch(`${this.baseUrl}/changes?locator=build:id:${buildId}`);
             changesXml = await changesResponse.text();
         } catch (e) {
+            console.log('Cannot parse XML');
             console.log(e);
         }
 
@@ -45,11 +47,13 @@ export class TeamcityService {
     private async getChange(changeId: number) {
         let changeResponse: any;
         let changeXml: string;
-        
+
+        console.log('Parsing external XML for changes');
         try {
             changeResponse = await fetch(`${this.baseUrl}/changes/id:${changeId}`);
             changeXml = await changeResponse.text();
         } catch (e) {
+            console.log('Cannot parse XML');
             console.log(e);
         }
 
