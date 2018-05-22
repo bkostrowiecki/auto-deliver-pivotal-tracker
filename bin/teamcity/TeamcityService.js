@@ -20,7 +20,11 @@ class TeamcityService {
     }
     getCommitMessagesFromBuild(buildId) {
         return __awaiter(this, void 0, void 0, function* () {
-            return (yield this.getChangesFromBuild(buildId)).map((change) => {
+            console.log('Changes from build are get...', buildId);
+            const changesFromBuild = yield this.getChangesFromBuild(buildId);
+            console.log('Changes from build', changesFromBuild);
+            return changesFromBuild.map(change => {
+                console.log('Change ', change);
                 return new CommitMessage_1.CommitMessage(change.getCommitDescription());
             });
         });

@@ -12,8 +12,13 @@ export class TeamcityService {
     }
 
     async getCommitMessagesFromBuild(buildId: number) {
-        return (await this.getChangesFromBuild(buildId)).map((change) => {
-            return new CommitMessage(change.getCommitDescription()); 
+        console.log('Changes from build are get...', buildId);
+        const changesFromBuild = await this.getChangesFromBuild(buildId);
+        console.log('Changes from build', changesFromBuild);
+
+        return changesFromBuild.map(change => {
+            console.log('Change ', change);
+            return new CommitMessage(change.getCommitDescription());
         });
     }
 
