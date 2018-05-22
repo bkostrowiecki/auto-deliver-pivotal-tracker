@@ -61,6 +61,7 @@ class TeamcityBuild {
             console.log('No teamcity service available');
             throw 'No teamcity service available';
         }
+        console.log('Teamcity service found');
     }
 }
 exports.TeamcityBuild = TeamcityBuild;
