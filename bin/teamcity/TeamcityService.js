@@ -27,8 +27,16 @@ class TeamcityService {
     }
     getChangesFromBuild(buildId) {
         return __awaiter(this, void 0, void 0, function* () {
-            const changesResponse = yield node_fetch_1.default(`${this.baseUrl}/changes?locator=build:id:${buildId}`);
-            const changesXml = yield changesResponse.text();
+            let changesResponse;
+            let changesXml;
+            try {
+                changesResponse = yield node_fetch_1.default(`${this.baseUrl}/changes?locator=build:id:${buildId}`);
+                changesXml = yield changesResponse.text();
+            }
+            catch (e) {
+                console.log(e);
+            }
+            console.log(changesXml);
             const teamcityChanges = new TeamcityChanges_1.TeamcityChanges(changesXml);
             const changesIds = teamcityChanges.getListOfIds();
             let changes = [];
@@ -40,8 +48,15 @@ class TeamcityService {
     }
     getChange(changeId) {
         return __awaiter(this, void 0, void 0, function* () {
-            const changeResponse = yield node_fetch_1.default(`${this.baseUrl}/changes/id:${changeId}`);
-            const changeXml = yield changeResponse.text();
+            let changeResponse;
+            let changeXml;
+            try {
+                changeResponse = yield node_fetch_1.default(`${this.baseUrl}/changes/id:${changeId}`);
+                changeXml = yield changeResponse.text();
+            }
+            catch (e) {
+                console.log(e);
+            }
             return new TeamcityChange_1.TeamcityChange(changeXml);
         });
     }

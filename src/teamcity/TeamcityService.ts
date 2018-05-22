@@ -18,8 +18,17 @@ export class TeamcityService {
     }
 
     private async getChangesFromBuild(buildId: number) {
-        const changesResponse = await fetch(`${this.baseUrl}/changes?locator=build:id:${buildId}`);
-        const changesXml = await changesResponse.text();
+        let changesResponse: any;
+        let changesXml: string;
+        
+        try {
+            changesResponse = await fetch(`${this.baseUrl}/changes?locator=build:id:${buildId}`);
+            changesXml = await changesResponse.text();
+        } catch (e) {
+            console.log(e);
+        }
+
+        console.log(changesXml);
 
         const teamcityChanges = new TeamcityChanges(changesXml);
 
@@ -34,8 +43,17 @@ export class TeamcityService {
     }
 
     private async getChange(changeId: number) {
-        const changeResponse = await fetch(`${this.baseUrl}/changes/id:${changeId}`);
-        const changeXml = await changeResponse.text();
+        let changeResponse: any;
+        let changeXml: string;
+        
+        try {
+            changeResponse = await fetch(`${this.baseUrl}/changes/id:${changeId}`);
+            changeXml = await changeResponse.text();
+        } catch (e) {
+            console.log(e);
+        }
+
+        console.log(changeXml);
 
         return new TeamcityChange(changeXml);
     }
