@@ -18,10 +18,14 @@ export class TeamcityBuild implements PivotalTrackerProcessable {
     }
 
     async getTasks(): Promise<StoryHash[]> {
+        this.validateTeamcityService();
+        
         console.log('Get tasks');
         console.log(this.response.buildId);
         const commitMessages = await this.teamcityService.getCommitMessagesFromBuild(this.response.buildId);
         console.log(commitMessages);
+
+        console.log('Map commit messages');
 
         const tasks = commitMessages
             .map((commit: CommitMessage) => {
@@ -55,5 +59,12 @@ export class TeamcityBuild implements PivotalTrackerProcessable {
 
     private removeDuplicates(tasks: StoryHash[]) {
         return [...new Set(tasks)];
+    }
+
+    private validateTeamcityService() {
+        if (!this.validateTeamcityService) {
+            console.log('No teamcity service available');
+            throw 'No teamcity service available';
+        }
     }
 }

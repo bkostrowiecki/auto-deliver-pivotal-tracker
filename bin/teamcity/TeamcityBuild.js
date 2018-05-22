@@ -21,10 +21,12 @@ class TeamcityBuild {
     }
     getTasks() {
         return __awaiter(this, void 0, void 0, function* () {
+            this.validateTeamcityService();
             console.log('Get tasks');
             console.log(this.response.buildId);
             const commitMessages = yield this.teamcityService.getCommitMessagesFromBuild(this.response.buildId);
             console.log(commitMessages);
+            console.log('Map commit messages');
             const tasks = commitMessages
                 .map((commit) => {
                 return commit.getTaskHashes();
@@ -53,6 +55,12 @@ class TeamcityBuild {
     }
     removeDuplicates(tasks) {
         return [...new Set(tasks)];
+    }
+    validateTeamcityService() {
+        if (!this.validateTeamcityService) {
+            console.log('No teamcity service available');
+            throw 'No teamcity service available';
+        }
     }
 }
 exports.TeamcityBuild = TeamcityBuild;
