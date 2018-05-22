@@ -9,7 +9,9 @@ export class TeamcityChanges {
     }
 
     getListOfIds() {
+        console.log('Parsing list of ids xml...');
         const xmlNodeFinder = new XmlNodeFinder(this.parsedXml);
+        console.log('XML parsed');
 
         const changeNodes = xmlNodeFinder.findChildrenInParent('change', this.parsedXml.root.children);
 
