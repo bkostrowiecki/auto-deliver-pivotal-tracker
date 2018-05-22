@@ -18,7 +18,9 @@ export class TeamcityBuild implements PivotalTrackerProcessable {
     }
 
     async getTasks(): Promise<StoryHash[]> {
+        console.log('Get tasks');
         const commitMessages = await this.teamcityService.getCommitMessagesFromBuild(this.response.buildId);
+        console.log(commitMessages);
 
         const tasks = commitMessages
             .map((commit: CommitMessage) => {
