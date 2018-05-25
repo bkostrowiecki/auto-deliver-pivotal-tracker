@@ -11,8 +11,8 @@ class App {
     constructor() {
         this.express = express();
         this.middleware();
-        this.routes();
         this.teamcityService = new TeamcityService_1.TeamcityService();
+        this.routes();
     }
     // Configure Express middleware.
     middleware() {

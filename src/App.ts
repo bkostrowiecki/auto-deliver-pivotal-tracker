@@ -22,9 +22,10 @@ class App {
     constructor() {
         this.express = express();
         this.middleware();
-        this.routes();
-
+        
         this.teamcityService = new TeamcityService();
+
+        this.routes();
     }
 
     // Configure Express middleware.
