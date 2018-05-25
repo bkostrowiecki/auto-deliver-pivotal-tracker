@@ -57,7 +57,7 @@ class TeamcityBuild {
         return [...new Set(tasks)];
     }
     validateTeamcityService() {
-        if (!this.validateTeamcityService) {
+        if (!this.teamcityService) {
             console.log('No teamcity service available');
             throw 'No teamcity service available';
         }
