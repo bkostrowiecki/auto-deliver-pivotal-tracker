@@ -90,6 +90,7 @@ export class Routes {
                 workflow
             });
         } catch (e) {
+            console.log(e);
             this.logError(e, req.body, workflow);
 
             res.status(500).json({
