@@ -29,7 +29,7 @@ export class TeamcityService {
         
         console.log('Parsing external XML for changes');
         try {
-            changesResponse = await this.authorizedFetch(`${this.baseUrl}/changes?locator=build:id:${buildId}`);
+            changesResponse = await this.authorizedFetch(`/changes?locator=build:id:${buildId}`);
             changesXml = await changesResponse.text();
         } catch (e) {
             console.log('Cannot parse XML');
@@ -56,7 +56,7 @@ export class TeamcityService {
 
         console.log('Parsing external XML for changes');
         try {
-            changeResponse = await this.authorizedFetch(`${this.baseUrl}/changes/id:${changeId}`);
+            changeResponse = await this.authorizedFetch(`/changes/id:${changeId}`);
             changeXml = await changeResponse.text();
         } catch (e) {
             console.log('Cannot parse XML');

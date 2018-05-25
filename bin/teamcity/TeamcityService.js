@@ -36,7 +36,7 @@ class TeamcityService {
             let changesXml;
             console.log('Parsing external XML for changes');
             try {
-                changesResponse = yield this.authorizedFetch(`${this.baseUrl}/changes?locator=build:id:${buildId}`);
+                changesResponse = yield this.authorizedFetch(`/changes?locator=build:id:${buildId}`);
                 changesXml = yield changesResponse.text();
             }
             catch (e) {
@@ -59,7 +59,7 @@ class TeamcityService {
             let changeXml;
             console.log('Parsing external XML for changes');
             try {
-                changeResponse = yield this.authorizedFetch(`${this.baseUrl}/changes/id:${changeId}`);
+                changeResponse = yield this.authorizedFetch(`/changes/id:${changeId}`);
                 changeXml = yield changeResponse.text();
             }
             catch (e) {
