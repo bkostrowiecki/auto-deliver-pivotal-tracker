@@ -5,7 +5,7 @@ import * as bodyParser from 'body-parser';
 import { PivotalTrackerService } from './pivotalTracker/PivotalTrackerService';
 import * as fs from 'fs';
 import * as moment from 'moment';
-import { StoryHash } from './pivotalTracker/task';
+import { StoryHash } from './pivotalTracker/Task';
 import { NevercodeBuild } from './nevercode/NevercodeBuild';
 import { Routes } from './Routes';
 import { TeamcityService } from './teamcity/TeamcityService';

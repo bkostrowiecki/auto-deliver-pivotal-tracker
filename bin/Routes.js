@@ -66,6 +66,7 @@ class Routes {
                 });
             }
             catch (e) {
+                console.log(e);
                 this.logError(e, req.body, workflow);
                 res.status(500).json({
                     error: JSON.stringify(e, null, 4),
