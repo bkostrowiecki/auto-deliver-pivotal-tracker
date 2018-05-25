@@ -12,6 +12,7 @@ const TeamcityChanges_1 = require("./TeamcityChanges");
 const node_fetch_1 = require("node-fetch");
 const CommitMessage_1 = require("../git/CommitMessage");
 const TeamcityChange_1 = require("./TeamcityChange");
+const base64 = require("base-64");
 class TeamcityService {
     constructor() {
         this.username = process.env.TEAMCITY_USERNAME;
@@ -35,7 +36,7 @@ class TeamcityService {
             let changesXml;
             console.log('Parsing external XML for changes');
             try {
-                changesResponse = yield node_fetch_1.default(`${this.baseUrl}/changes?locator=build:id:${buildId}`);
+                changesResponse = yield this.authorizedFetch(`${this.baseUrl}/changes?locator=build:id:${buildId}`);
                 changesXml = yield changesResponse.text();
             }
             catch (e) {
@@ -58,7 +59,7 @@ class TeamcityService {
             let changeXml;
             console.log('Parsing external XML for changes');
             try {
-                changeResponse = yield node_fetch_1.default(`${this.baseUrl}/changes/id:${changeId}`);
+                changeResponse = yield this.authorizedFetch(`${this.baseUrl}/changes/id:${changeId}`);
                 changeXml = yield changeResponse.text();
             }
             catch (e) {
@@ -67,6 +68,13 @@ class TeamcityService {
             }
             console.log(changeXml);
             return new TeamcityChange_1.TeamcityChange(changeXml);
+        });
+    }
+    authorizedFetch(url) {
+        return node_fetch_1.default(`${this.baseUrl}${url}`, {
+            headers: {
+                Authorization: 'Basic ' + base64.encode(this.username + ':' + this.password)
+            }
         });
     }
 }

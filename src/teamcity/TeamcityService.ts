@@ -2,6 +2,7 @@ import { TeamcityChanges } from './TeamcityChanges';
 import fetch from 'node-fetch';
 import { CommitMessage } from '../git/CommitMessage';
 import { TeamcityChange } from './TeamcityChange';
+import * as base64 from 'base-64';
 
 export class TeamcityService {
     private username = process.env.TEAMCITY_USERNAME;
@@ -28,7 +29,7 @@ export class TeamcityService {
         
         console.log('Parsing external XML for changes');
         try {
-            changesResponse = await fetch(`${this.baseUrl}/changes?locator=build:id:${buildId}`);
+            changesResponse = await this.authorizedFetch(`${this.baseUrl}/changes?locator=build:id:${buildId}`);
             changesXml = await changesResponse.text();
         } catch (e) {
             console.log('Cannot parse XML');
@@ -55,7 +56,7 @@ export class TeamcityService {
 
         console.log('Parsing external XML for changes');
         try {
-            changeResponse = await fetch(`${this.baseUrl}/changes/id:${changeId}`);
+            changeResponse = await this.authorizedFetch(`${this.baseUrl}/changes/id:${changeId}`);
             changeXml = await changeResponse.text();
         } catch (e) {
             console.log('Cannot parse XML');
@@ -65,5 +66,14 @@ export class TeamcityService {
         console.log(changeXml);
 
         return new TeamcityChange(changeXml);
+    }
+
+    private authorizedFetch(url: string) {
+        return fetch(`${this.baseUrl}${url}`, {
+            headers: {
+                Authorization:
+                    'Basic ' + base64.encode(this.username + ':' + this.password)
+            }
+        });
     }
 }
