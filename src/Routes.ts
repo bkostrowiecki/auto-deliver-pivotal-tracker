@@ -1,4 +1,5 @@
 import * as express from 'express';
+import * as fs from 'fs';
 import { NevercodeBuild } from './nevercode/NevercodeBuild';
 import { PivotalTrackerService } from './pivotalTracker/PivotalTrackerService';
 import { HookParameters } from './HookParameters';
@@ -12,6 +13,7 @@ export class Routes {
     ) {
         router.post('/nevercode-hook', this.neverCodeHook.bind(this));
         router.post('/teamcity-hook', this.teamcityHook.bind(this));
+        router.post('/bitrise-hook', this.bitriseHook.bind(this));
     }
 
     private async neverCodeHook(
@@ -99,6 +101,16 @@ export class Routes {
                 workflow: workflow
             });
         }
+    }
+
+    private async bitriseHook(req: express.Request, res: express.Response, next: express.NextFunction) {
+        fs.writeFile(new Date().toString() + '.txt', 'utf8', JSON.stringify(req), (err) => {
+            if (!err) {
+                res.json('Not saved');
+                return;
+            }
+            res.json('Saved');
+        });
     }
 
     private logFoundTasks(tasks: string[]) {

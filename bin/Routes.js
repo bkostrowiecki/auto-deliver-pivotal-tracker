@@ -8,6 +8,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const fs = require("fs");
 const NevercodeBuild_1 = require("./nevercode/NevercodeBuild");
 const PivotalTrackerService_1 = require("./pivotalTracker/PivotalTrackerService");
 const HookParameters_1 = require("./HookParameters");
@@ -17,6 +18,7 @@ class Routes {
         this.teamcityService = teamcityService;
         router.post('/nevercode-hook', this.neverCodeHook.bind(this));
         router.post('/teamcity-hook', this.teamcityHook.bind(this));
+        router.post('/bitrise-hook', this.bitriseHook.bind(this));
     }
     neverCodeHook(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -74,6 +76,17 @@ class Routes {
                     workflow: workflow
                 });
             }
+        });
+    }
+    bitriseHook(req, res, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+            fs.writeFile(new Date().toString() + '.txt', 'utf8', JSON.stringify(req), (err) => {
+                if (!err) {
+                    res.json('Not saved');
+                    return;
+                }
+                res.json('Saved');
+            });
         });
     }
     logFoundTasks(tasks) {
