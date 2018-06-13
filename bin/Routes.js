@@ -80,7 +80,7 @@ class Routes {
     }
     bitriseHook(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
-            fs.writeFile(new Date().toString() + '.txt', 'utf8', JSON.stringify(req), (err) => {
+            fs.writeFile(new Date().toString() + '.txt', 'utf8', JSON.stringify(req.body), (err) => {
                 if (!err) {
                     res.json('Not saved');
                     return;
