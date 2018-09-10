@@ -1,4 +1,4 @@
-# pivotal-auto-deliver
+# auto-deliver-pivotal-tracker
 
 Pivotal Tracker auto deliver integration.
 
