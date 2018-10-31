@@ -8,19 +8,20 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const fs = require("fs");
 const NevercodeBuild_1 = require("./nevercode/NevercodeBuild");
 const PivotalTrackerService_1 = require("./pivotalTracker/PivotalTrackerService");
 const HookParameters_1 = require("./HookParameters");
 const TeamcityBuild_1 = require("./teamcity/TeamcityBuild");
+const BitriseBuild_1 = require("./bitrise/BitriseBuild");
 class Routes {
-    constructor(router, teamcityService) {
+    constructor(router, teamcityService, bitriseService) {
         this.teamcityService = teamcityService;
+        this.bitriseService = bitriseService;
         router.post('/nevercode-hook', this.neverCodeHook.bind(this));
         router.post('/teamcity-hook', this.teamcityHook.bind(this));
         router.post('/bitrise-hook', this.bitriseHook.bind(this));
     }
-    neverCodeHook(req, res, next) {
+    neverCodeHook(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const hookParameters = new HookParameters_1.HookParameters(req);
             const workflow = hookParameters.getWorkflow();
@@ -47,7 +48,7 @@ class Routes {
             }
         });
     }
-    teamcityHook(req, res, next) {
+    teamcityHook(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const hookParameters = new HookParameters_1.HookParameters(req);
             const workflow = hookParameters.getWorkflow();
@@ -78,15 +79,42 @@ class Routes {
             }
         });
     }
-    bitriseHook(req, res, next) {
+    bitriseHook(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            fs.writeFile(new Date().toString() + '.txt', 'utf8', JSON.stringify(req.body), (err) => {
-                if (!err) {
-                    res.json('Not saved');
-                    return;
+            const hookParameters = new HookParameters_1.HookParameters(req);
+            const workflow = hookParameters.getWorkflow();
+            console.log('Body: ', req.body);
+            console.log('Pivotal tracker service creation...');
+            const pivotalTrackerService = new PivotalTrackerService_1.PivotalTrackerService(hookParameters.getPivotalProjectId());
+            console.log('Pivotal tracker service created');
+            try {
+                console.log('Bitrise build creation...');
+                const build = new BitriseBuild_1.BitriseBuild(req.body, this.bitriseService, hookParameters.getWorkflow(), hookParameters.shouldDeliver());
+                console.log('Build triggered by other action than finish');
+                if (!build.isTriggeredByBuildFinish()) {
+                    return res.json({
+                        status: 'Ignored',
+                        workflow
+                    });
                 }
-                res.json('Saved');
-            });
+                console.log('Bitrise build created');
+                const deliveredTasks = yield pivotalTrackerService.processTasks(build);
+                this.logDeliveredTasks(deliveredTasks);
+                return res.json({
+                    status: 'OK',
+                    deliveredTasks,
+                    workflow
+                });
+            }
+            catch (e) {
+                console.log(e);
+                this.logError(e, req.body, workflow);
+                res.status(500).json({
+                    error: JSON.stringify(e, null, 4),
+                    body: JSON.stringify(req.body, null, 4),
+                    workflow: workflow
+                });
+            }
         });
     }
     logFoundTasks(tasks) {

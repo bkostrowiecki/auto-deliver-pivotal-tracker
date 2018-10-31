@@ -1,9 +1,6 @@
 import { StoryHash } from '../pivotalTracker/Task';
-import { NevercodeChange } from '../nevercode/NevercodeChange';
 import { CommitMessage } from '../git/CommitMessage';
 import TeamcityWebhookReponse from './TeamcityWebhookResponse';
-import { TeamcityChanges } from './TeamcityChanges';
-import { TeamcityChange } from './TeamcityChange';
 import { PivotalTrackerProcessable } from '../pivotalTracker/PivotalTrackerProcessable';
 import { TeamcityService } from './TeamcityService';
 
