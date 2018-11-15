@@ -14,7 +14,7 @@ const BitriseModels_1 = require("./BitriseModels");
 class BitriseService {
     constructor() {
         this.bitriseToken = process.env.BITRISE_TOKEN;
-        this.baseUrl = 'https://api.bitrise.io/v0.1' || 'http://localhost';
+        this.baseUrl = process.env.SERVICE_URL || 'http://localhost';
     }
     getArtifactsFromBuild(slugs) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -47,6 +47,8 @@ class BitriseService {
                 return changesData.map(change => {
                     console.log('Change ', change);
                     return new CommitMessage_1.CommitMessage(change);
+                }).filter(msg => {
+                    return msg.getTaskHashes().length > 0;
                 });
             });
         });
@@ -59,10 +61,12 @@ class BitriseService {
                 return data.json();
             })
                 .then(artifacts => {
-                cnos;
                 let changelog = artifacts.data.find(x => x.title === 'Changelog.md');
                 let versionFile = artifacts.data.find(x => x.title === 'version.txt');
                 return new BitriseModels_1.BitriseArtifacts(changelog.slug, versionFile.slug);
+            })
+                .catch(_ => {
+                throw Error('Missing required artifacts!');
             });
         });
     }
@@ -74,7 +78,7 @@ class BitriseService {
                 return data.json();
             })
                 .then(artifactUrl => {
-                return node_fetch_1.default(artifactUrl.expiring_download_url);
+                return node_fetch_1.default(artifactUrl.data.expiring_download_url);
             });
         });
     }

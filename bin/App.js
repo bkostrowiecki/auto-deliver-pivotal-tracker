@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express = require("express");
 const logger = require("morgan");
 const bodyParser = require("body-parser");
+const Routes_1 = require("./Routes");
 const TeamcityService_1 = require("./teamcity/TeamcityService");
 const BitriseService_1 = require("./bitrise/BitriseService");
 // Creates and configures an ExpressJS web server.
@@ -33,6 +34,7 @@ class App {
                 message: 'Hello World!'
             });
         });
+        const routes = new Routes_1.Routes(router, this.teamcityService, this.bitriseService);
         this.express.use('/', router);
     }
 }

@@ -45,6 +45,11 @@ class App {
             });
         });
 
+        const routes = new Routes(
+            router,
+            this.teamcityService,
+            this.bitriseService
+        );
 
         this.express.use('/', router);
     }
