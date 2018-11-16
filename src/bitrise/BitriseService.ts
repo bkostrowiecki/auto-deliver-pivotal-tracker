@@ -55,11 +55,12 @@ export class BitriseService {
                 return data.json<BitriseArtifactsResponse>();
             })
             .then(artifacts => {
-                let changelog = artifacts.data.find(x => x.title === 'Changelog.md');
-                let versionFile = artifacts.data.find(x => x.title === 'version.txt');
+                let changelog = artifacts.data.find(x => x.title === 'CHANGELOG.md');
+                let versionFile = artifacts.data.find(x => x.title === 'build_version.txt');
                 return new BitriseArtifacts(changelog.slug, versionFile.slug);
             })
-            .catch(_ => {
+            .catch(e => {
+                console.log(e);
                 throw Error('Missing required artifacts!');
             });
     }

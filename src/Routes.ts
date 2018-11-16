@@ -120,8 +120,8 @@ export class Routes {
                 hookParameters.shouldDeliver()
             );
 
-            console.log('Build triggered by other action than finish')
             if (!build.isTriggeredByBuildFinish()) {
+                console.log('Build triggered by other action than finish')
                 return res.json({
                     status: 'Ignored',
                     workflow

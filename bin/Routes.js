@@ -90,8 +90,8 @@ class Routes {
             try {
                 console.log('Bitrise build creation...');
                 const build = new BitriseBuild_1.BitriseBuild(req.body, this.bitriseService, hookParameters.getWorkflow(), hookParameters.shouldDeliver());
-                console.log('Build triggered by other action than finish');
                 if (!build.isTriggeredByBuildFinish()) {
+                    console.log('Build triggered by other action than finish');
                     return res.json({
                         status: 'Ignored',
                         workflow

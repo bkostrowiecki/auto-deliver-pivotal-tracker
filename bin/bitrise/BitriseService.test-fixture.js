@@ -23,7 +23,7 @@ class BitriseServiceTestsFixture {
                 },
                 {
                     "slug": this.changelogArtifactSlug,
-                    "title": "Changelog.md"
+                    "title": "CHANGELOG.md"
                 },
                 {
                     "slug": "03kh09k4d9f34f3f",
@@ -31,7 +31,7 @@ class BitriseServiceTestsFixture {
                 },
                 {
                     "slug": this.versionFileSlug,
-                    "title": "version.txt"
+                    "title": "build_version.txt"
                 }
             ]
         });
