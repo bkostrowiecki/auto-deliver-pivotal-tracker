@@ -15,7 +15,7 @@ describe('Teamcity Service', () => {
 </changes>`;
 
     const teamcityChangesListIdsExpected = [150056, 150055, 150054];
-    
+
     const mockChangeXml = (changeId: number) => `
     <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <change id="150056" version="20afc22677641d1fd16cb65821539aee8e0761dd" username="j.m.szczepanik" date="20180510T101554+0000" href="/httpAuth/app/rest/changes/id:150056" webUrl="http://dev-ci.cloudapp.net:82/viewModification.html?modId=150056&amp;personal=false">

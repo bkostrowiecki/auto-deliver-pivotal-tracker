@@ -1,29 +1,26 @@
-import * as path from 'path';
 import * as express from 'express';
 import * as logger from 'morgan';
 import * as bodyParser from 'body-parser';
 import { PivotalTrackerService } from './pivotalTracker/PivotalTrackerService';
-import * as fs from 'fs';
-import * as moment from 'moment';
-import { StoryHash } from './pivotalTracker/Task';
-import { NevercodeBuild } from './nevercode/NevercodeBuild';
 import { Routes } from './Routes';
 import { TeamcityService } from './teamcity/TeamcityService';
+import { BitriseService } from './bitrise/BitriseService';
 
 // Creates and configures an ExpressJS web server.
 class App {
     // ref to Express instance
     public express: express.Application;
 
-    private pivotalTrackerService: PivotalTrackerService;
     private teamcityService: TeamcityService;
+    private bitriseService: BitriseService;
 
     //Run configuration methods on the Express instance.
     constructor() {
         this.express = express();
         this.middleware();
-        
+
         this.teamcityService = new TeamcityService();
+        this.bitriseService = new BitriseService();
 
         this.routes();
     }
@@ -42,7 +39,7 @@ class App {
         * API endpoints */
         let router = express.Router();
         // placeholder route handler
-        router.get('/', (req, res, next) => {
+        router.get('/', (req, res) => {
             res.json({
                 message: 'Hello World!'
             });
@@ -50,7 +47,8 @@ class App {
 
         const routes = new Routes(
             router,
-            this.teamcityService
+            this.teamcityService,
+            this.bitriseService
         );
 
         this.express.use('/', router);

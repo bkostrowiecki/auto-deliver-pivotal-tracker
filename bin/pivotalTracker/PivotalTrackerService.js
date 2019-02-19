@@ -9,7 +9,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const axios_1 = require("axios");
-const PivotalTrackerStoryState_1 = require("./PivotalTrackerStoryState");
 const buildTag = 'build-';
 class PivotalTrackerService {
     constructor(pivotalProjectId) {
@@ -42,33 +41,33 @@ class PivotalTrackerService {
                     catch (e) {
                     }
                 }
-                axios_1.default.all(promises).then(axios_1.default.spread((...responses) => {
-                    console.log(responses.length);
-                    let updateTaskPromises = responses.map((response) => {
-                        console.log('TASK');
-                        let story = response.data;
-                        console.log(JSON.stringify(response.data, null, 4));
-                        story.labels = story.labels.filter((label) => label.name.indexOf(buildTag + workflow) === -1);
-                        story.labels.push(buildLabel);
-                        if (story.current_state === PivotalTrackerStoryState_1.PivotalTrackerStoryState.FINISHED && shouldDeliver) {
-                            console.log('Current state changed to: ' + story.current_state);
-                            story.current_state = PivotalTrackerStoryState_1.PivotalTrackerStoryState.DELIVERED;
-                        }
-                        return this.updateTask(story).then((response) => {
-                            console.log(JSON.stringify(response.data, null, 4));
-                            return this.postComment(story.id, buildLabel);
-                        }, () => {
-                            return new Promise((resolve) => resolve());
-                        });
-                    });
-                    return axios_1.default.all(updateTaskPromises);
-                }))
-                    .then(() => {
-                    resolve();
-                })
-                    .catch((reason) => {
-                    reject(reason);
-                });
+                // axios.all(promises).then(axios.spread((...responses) => {
+                //     console.log(responses.length);
+                //     let updateTaskPromises = responses.map((response: AxiosResponse) => {
+                //         console.log('TASK');
+                //         let story = response.data;
+                //         console.log(JSON.stringify(response.data, null, 4));
+                //         story.labels = story.labels.filter((label: StoryLabel) => label.name.indexOf(buildTag + workflow) === -1);
+                //         story.labels.push(buildLabel);
+                //         if (story.current_state === PivotalTrackerStoryState.FINISHED && shouldDeliver) {
+                //             console.log('Current state changed to: ' + story.current_state);
+                //             story.current_state = PivotalTrackerStoryState.DELIVERED;
+                //         }
+                //         return this.updateTask(story).then((response: AxiosResponse) => {
+                //             console.log(JSON.stringify(response.data, null, 4));
+                //             return this.postComment(story.id, buildLabel);
+                //         }, () => {
+                //             return new Promise((resolve) => resolve());
+                //         });
+                //     });
+                //     return axios.all(updateTaskPromises);
+                // }))
+                // .then(() => {
+                resolve();
+                // })
+                // .catch((reason: any) => {
+                //     reject(reason);
+                // });
             }));
         });
     }
