@@ -22,6 +22,15 @@ The configuration should be set as environment variables.
 **Endpoint**: `POST` `/nevercode-hook`
 
 This endpoint waits for request from Nevercode.
+
+**Endpoint**: `POST` `/bitrise-hook`
+
+This endpoint waits for request from Nevercode.
+
+**Endpoint**: `POST` `/teamcity-hook`
+
+This endpoint waits for request from Nevercode.
+
 <!--stackedit_data:
 eyJoaXN0b3J5IjpbLTM2OTkwMzM1MF19
 -->
