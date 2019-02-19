@@ -6,6 +6,8 @@ https://www.pivotaltracker.com
 
 ## Available hooks
 * Nevercode (https://nevercode.io/)
+* Bitrise
+* Teamcity
 
 ## Configuration
 You should set pivotal tracker configuration before you start the application.
